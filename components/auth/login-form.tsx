@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
-import { AuthContext } from "../../store/auth-context";
-import { useContext } from "react";
-import { useRouter } from "next/router";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -19,10 +16,9 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import NextLink from 'next/link'
-import { toast } from 'material-react-toastify';
 import { ucFirst } from "../../utils/functions";
 
-type Inputs = {
+export type Inputs = {
 	email: string;
 	password: string;
 };
@@ -37,12 +33,18 @@ const schema = object({
 		.max(16, "Password must be at most 16 characters"),
 }).required();
 
-const LoginForm: React.FC = () => {
-	const router = useRouter();
-	const { login, status } = useContext(AuthContext);
+type PropsType = {
+	submitForm: (
+		data: Inputs,
+		setError: (error: string | null) => void,
+		setProcessing: (isProcessing: boolean) => void,
+	) => void;
+}
+
+const LoginForm: FC<PropsType> = ({submitForm}) => {
 	const [showPassword, setShowPassword] = useState(false);
-	const [isProcessingLogin, setIsProcessingLogin] = useState(false);
-	const [loginError, setLoginError] = useState<string | null>(null);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
 
 	const {
 		register,
@@ -52,39 +54,16 @@ const LoginForm: React.FC = () => {
 		resolver: yupResolver(schema),
 	});
 
+	const setError = (error: string | null) => setSubmitError(error);
+	const setProcessing = (isProcessing: boolean) => setIsSubmitting(isProcessing);
+
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
-		if (isProcessingLogin) {
+		if (isSubmitting) {
 			return false;
 		}
-
-		setIsProcessingLogin(true);
-
-		const { email, password } = data;
-		const { error } = await login(email, password);
-
-		if (!error) {
-			setLoginError(null);
-			setIsProcessingLogin(false);
-		} else {
-			setIsProcessingLogin(false);
-			setLoginError(error);
-		}
+		setIsSubmitting(true);
+		submitForm(data, setError, setProcessing);
 	};
-
-	useEffect(() => {
-		if(router.query.notification === 'signup-success') {
-			toast.success('You are successfully Signup');
-		}
-	}, [router.isReady, router.query]);
-
-	if(!router.isReady) {
-		return null;
-	}
-
-	if (status == "authenticated") {
-		router.replace("/");
-		return null;
-	}
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -103,13 +82,13 @@ const LoginForm: React.FC = () => {
 					Login
 				</Typography>
 
-				{loginError && (
+				{submitError && (
 					<Alert
 						data-test="form-error"
 						severity="error"
 						sx={{ width: "100%" }}
 					>
-						{ucFirst(loginError)}
+						{ucFirst(submitError)}
 					</Alert>
 				)}
 
@@ -176,7 +155,7 @@ const LoginForm: React.FC = () => {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 						data-test="submit-login"
-						loading={!!isProcessingLogin}
+						loading={!!isSubmitting}
 					>
 						Login
 					</LoadingButton>

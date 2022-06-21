@@ -4,7 +4,6 @@ import Protected from "../components/auth/protected";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Head from 'next/head';
-
 const HomePage = () => {
 	return (
 		<>

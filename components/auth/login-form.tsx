@@ -1,7 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
+import { AuthContext } from "../../store/auth-context";
+import { useContext } from "react";
+import { useRouter } from "next/router";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -16,9 +19,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import NextLink from 'next/link'
+import { toast } from 'material-react-toastify';
 import { ucFirst } from "../../utils/functions";
 
-export type Inputs = {
+type Inputs = {
 	email: string;
 	password: string;
 };
@@ -33,18 +37,12 @@ const schema = object({
 		.max(16, "Password must be at most 16 characters"),
 }).required();
 
-type PropsType = {
-	submitForm: (
-		data: Inputs,
-		setError: (error: string | null) => void,
-		setProcessing: (isProcessing: boolean) => void,
-	) => void;
-}
-
-const LoginForm: FC<PropsType> = ({submitForm}) => {
+const LoginForm: React.FC = () => {
+	const router = useRouter();
+	const { login, status } = useContext(AuthContext);
 	const [showPassword, setShowPassword] = useState(false);
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [submitError, setSubmitError] = useState<string | null>(null);
+	const [isProcessingLogin, setIsProcessingLogin] = useState(false);
+	const [loginError, setLoginError] = useState<string | null>(null);
 
 	const {
 		register,
@@ -54,16 +52,39 @@ const LoginForm: FC<PropsType> = ({submitForm}) => {
 		resolver: yupResolver(schema),
 	});
 
-	const setError = (error: string | null) => setSubmitError(error);
-	const setProcessing = (isProcessing: boolean) => setIsSubmitting(isProcessing);
-
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
-		if (isSubmitting) {
+		if (isProcessingLogin) {
 			return false;
 		}
-		setIsSubmitting(true);
-		submitForm(data, setError, setProcessing);
+
+		setIsProcessingLogin(true);
+
+		const { email, password } = data;
+		const { error } = await login(email, password);
+
+		if (!error) {
+			setLoginError(null);
+			setIsProcessingLogin(false);
+		} else {
+			setIsProcessingLogin(false);
+			setLoginError(error);
+		}
 	};
+
+	useEffect(() => {
+		if(router.query.notification === 'signup-success') {
+			toast.success('You are successfully Signup');
+		}
+	}, [router.isReady, router.query]);
+
+	if(!router.isReady) {
+		return null;
+	}
+
+	if (status == "authenticated") {
+		router.replace("/");
+		return null;
+	}
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -82,13 +103,13 @@ const LoginForm: FC<PropsType> = ({submitForm}) => {
 					Login
 				</Typography>
 
-				{submitError && (
+				{loginError && (
 					<Alert
 						data-test="form-error"
 						severity="error"
 						sx={{ width: "100%" }}
 					>
-						{ucFirst(submitError)}
+						{ucFirst(loginError)}
 					</Alert>
 				)}
 
@@ -155,7 +176,7 @@ const LoginForm: FC<PropsType> = ({submitForm}) => {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 						data-test="submit-login"
-						loading={!!isSubmitting}
+						loading={!!isProcessingLogin}
 					>
 						Login
 					</LoadingButton>

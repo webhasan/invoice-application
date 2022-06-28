@@ -20,9 +20,7 @@ const Protected: FC<propsType> = ({ children }) => {
 	}
 
 	if (noCompanyDetails) {
-		router.push(
-			`/company-details?redirect=${window.location.href}&notification=no-company-details`
-		);
+		router.push('/company-details');
 		return null;
 	}
 

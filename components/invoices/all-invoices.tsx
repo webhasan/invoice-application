@@ -23,7 +23,7 @@ const AllInvoices = () => {
 		if(sortData[0]) {
 			const {sort, field: sortOrder} = sortData[0];
 			router.replace({
-				query: {...router.query, sort, sortOrder}
+				query: {...router.query, sort: sort?.toLocaleUpperCase(), sortOrder}
 			});
 		}else {
 			const query = router.query;
@@ -111,7 +111,7 @@ const AllInvoices = () => {
 			}
 		})();
 
-	}, [router.query])
+	}, [router.query, router.isReady, execute])
 
 
 	const onClickRow = (params: GridRowParams<any>) => {
@@ -122,7 +122,7 @@ const AllInvoices = () => {
 		{
 			field: "clientName",
 			headerName: "Client Name",
-         valueGetter: (params: GridValueGetterParams) => params.row.client.name,
+         	valueGetter: (params: GridValueGetterParams) => params.row.client.name,
 			sortable: false,
 			minWidth: 100,
 			filterable: true,
@@ -130,7 +130,7 @@ const AllInvoices = () => {
 			flex: 1,
 		},
 		{
-			field: "companyName",
+			field: "company",
 			headerName: "Company",
 			sortable: true,
 			minWidth: 100,
@@ -177,10 +177,9 @@ const AllInvoices = () => {
 			valueGetter: (params: GridValueGetterParams) => params.row.invoice.projectCode,
 		},
 		{
-			field: "price",
+			field: "number",
 			headerName: "Price",
 			sortable: true,
-			type: "number",
 			minWidth: 100,
 			filterable: false,
 			flex: 1,

@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { AuthContext } from "../../store/auth-context";
 import Link from 'next/link';
+import NavLink from "./nav-link";
 
 const ResponsiveAppBar = () => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
@@ -45,7 +46,7 @@ const ResponsiveAppBar = () => {
 	};
 
 	return (
-		<AppBar position="static">
+		<AppBar position="static" data-test='nav-bar'>
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
 					<AdbIcon
@@ -133,9 +134,9 @@ const ResponsiveAppBar = () => {
 												</Link>
 											</Typography>
 											<Typography textAlign="center">
-												<Link href="/invoices">
+												<NavLink href="/invoices">
 													Invoices
-												</Link>
+												</NavLink>
 											</Typography>
 										</>
 									}
@@ -243,7 +244,7 @@ const ResponsiveAppBar = () => {
 									</MenuItem>
 								</Link>
 
-								<MenuItem onClick={handleLogout}>
+								<MenuItem onClick={handleLogout} data-test='logout-button'>
 									<Typography textAlign="center">
 										Logout
 									</Typography>

@@ -24,7 +24,7 @@ const ClientsArchive = () => {
 		if(sortData[0]) {
 			const {sort, field: sortOrder} = sortData[0];
 			router.replace({
-				query: {...router.query, sort, sortOrder}
+				query: {...router.query, sort: sort?.toLocaleUpperCase(), sortOrder}
 			});
 		}else {
 			const query = router.query;
@@ -109,7 +109,7 @@ const ClientsArchive = () => {
 			}
 		})();
 
-	}, [router.query])
+	}, [router.query, router.isReady, execute])
 
 	const onClickRow = (params: GridRowParams<any>) => {
 		router.push(`clients/${params.id}`)
@@ -117,7 +117,7 @@ const ClientsArchive = () => {
 
 	const columns: GridColDef[] = [
 		{
-			field: "clientName",
+			field: "name",
 			headerName: "Name",
 			valueGetter: (params: GridValueGetterParams) =>
 				params.row.name,
@@ -133,8 +133,7 @@ const ClientsArchive = () => {
 		{
 			field: "companyName",
 			headerName: "Company Name",
-			valueGetter: (params: GridValueGetterParams) =>
-				params.row.companyDetails.name,
+			valueGetter: (params: GridValueGetterParams) => params.row.companyDetails.name,
 			sortable: true,
 			minWidth: 100,
 			filterable: true,
@@ -156,7 +155,6 @@ const ClientsArchive = () => {
 			field: "totalBilled",
 			headerName: "Total Billed",
 			sortable: true,
-			type: "number",
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
@@ -168,7 +166,6 @@ const ClientsArchive = () => {
 			field: "invoicesCount",
 			headerName: "Invoices Count",
 			sortable: true,
-			type: "number",
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
@@ -237,7 +234,7 @@ const ClientsArchive = () => {
 				hideFooter={true}
 				disableColumnFilter={false}
 				onClickRow={onClickRow}
-            onSortModelChange = {handleSort}
+            	onSortModelChange = {handleSort}
 				onFilterModelChange={handleFilter}
 				onPageChange={handlePageChange}
 				currentPage={currentPage} 

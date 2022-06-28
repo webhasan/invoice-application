@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 
 const LatestClients = () => {
 	const router = useRouter();
-	const { error, status, value} = useAsync(api.getClients, true, {limit: 10});
+	const { error, status, value} = useAsync(api.getClients, true, {limit: 10, sort: 'DESC', sortOrder: 'creation'});
 	const loading = status === "pending" || status === "idle";
 
 	const onClickRow = (params: GridRowParams<any>) => {
@@ -28,17 +28,18 @@ const LatestClients = () => {
 			editable: false,
 			flex: 1,
 		},
+		 
 		{
-			field: "companyDetails",
+			field: "companyName",
 			headerName: "Company Name",
-			valueGetter: (params: GridValueGetterParams) =>
-				params.row.companyDetails.name,
+			valueGetter: (params: GridValueGetterParams) => params.row.companyDetails.name,
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
 			editable: false,
 			flex: 1,
 		},
+
 		{
 			field: "email",
 			headerName: "Email Address",
@@ -51,7 +52,6 @@ const LatestClients = () => {
 			field: "totalBilled",
 			headerName: "Total Billed",
 			sortable: false,
-			type: "number",
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
@@ -60,7 +60,6 @@ const LatestClients = () => {
 			field: "invoicesCount",
 			headerName: "Invoices Count",
 			sortable: false,
-			type: "number",
 			minWidth: 100,
 			filterable: false,
 			flex: 1,

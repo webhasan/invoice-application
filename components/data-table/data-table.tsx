@@ -70,7 +70,7 @@ const DataTable: FC<propsTypes> = ({
 	}
 
 	const CustomRow  = (props: GridRowProps) => {
-		return <GridRow data-test={`${rowColTestPrefix}-id-${props.row.id}`} {...props} />
+		return <GridRow data-test={`${rowColTestPrefix}-row-${props.row.id}`} {...props} />
 	}
 	
 	const CustomCell = (props: GridCellProps) => {

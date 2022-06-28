@@ -164,9 +164,9 @@ const SignupForm: React.FC = () => {
 						type="password"
 						id="password"
 						inputProps={{ "data-test": "confirm-password" }}
-						error={!!errors.password}
+						error={!!errors.confirmPassword}
 						helperText={
-							errors.password && (
+							errors.confirmPassword && (
 								<span data-test="confirm-password-error">
 									{errors.confirmPassword?.message}
 								</span>

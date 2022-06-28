@@ -12,7 +12,7 @@ import {useRouter} from "next/router";
 
 const LatestInvoices = () => {
 	const router = useRouter();
-	const { error, status, value } = useAsync(api.getInvoices, true, {limit: 10, sortBy: "date", sortOrder: "desc"});
+	const { error, status, value } = useAsync(api.getInvoices, true, {limit: 10, sort: 'DESC', sortOrder: 'creation'});
 	const loading = status === "pending" || status === "idle";
 
 	const onClickRow = (params: GridRowParams<any>) => {
@@ -23,7 +23,7 @@ const LatestInvoices = () => {
 		{
 			field: "clientName",
 			headerName: "Client",
-         valueGetter: (params: GridValueGetterParams) => params.row.client.name,
+         	valueGetter: (params: GridValueGetterParams) => params.row.client.name,
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
@@ -43,7 +43,7 @@ const LatestInvoices = () => {
 		{
 			field: "date",
 			headerName: "Date",
-         valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.date),
+         	valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.date),
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
@@ -52,7 +52,7 @@ const LatestInvoices = () => {
 		{
 			field: "project",
 			headerName: "Project",
-         valueGetter: (params: GridValueGetterParams) => params.row.invoice.projectCode,
+         	valueGetter: (params: GridValueGetterParams) => params.row.invoice.projectCode,
 			sortable: false,
 			type: "number",
 			minWidth: 100,
@@ -60,11 +60,10 @@ const LatestInvoices = () => {
 			flex: 1,
 		},
 		{
-			field: "Price",
+			field: "number",
 			headerName: "Price",
-         valueGetter: (params: GridValueGetterParams) => params.row.invoice.value,
+         	valueGetter: (params: GridValueGetterParams) => params.row.invoice.value,
 			sortable: false,
-			type: "number",
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
@@ -133,7 +132,7 @@ const LatestInvoices = () => {
 				name="invoices"
 				dataTest="invoices-table"
 				onClickRow = {onClickRow}
-            rowColTestPrefix="invoice"
+            	rowColTestPrefix="invoice"
 				loading={loading}
 				columns={columns}
 				error={error}

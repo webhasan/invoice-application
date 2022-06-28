@@ -118,7 +118,7 @@ const ClientForm: React.FC<PropTypes> = ({
 								error={!!errors.email}
 								helperText={
 									errors.email && (
-										<span data-test="company-email-error">
+										<span data-test="client-email-error">
 											{errors.email.message}
 										</span>
 									)
@@ -252,7 +252,7 @@ const ClientForm: React.FC<PropTypes> = ({
 						fullWidth
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
-						data-test="submit-login"
+						data-test="submit-client"
 						loading={!!processingSubmit}
 					>
 						{buttonText}

@@ -20,7 +20,7 @@ const EditClient:FC<PropsType> = ({id, defaultValue}) => {
 			await api.editClient({id, ...data});
 			setProcessingSubmit(false);
          toast.success(
-            <span data-test="success-message">Successfully updated client info.</span>
+            <span data-test="form-success">Successfully updated client info.</span>
          );
          setProcessingSubmit(false);
 		} catch (error) {

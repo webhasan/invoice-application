@@ -21,14 +21,14 @@ const AllInvoices = () => {
 
 	const handleSort = (sortData: GridSortModel) => {
 		if(sortData[0]) {
-			const {sort, field: sortOrder} = sortData[0];
+			const {sort, field: sortBy} = sortData[0];
 			router.replace({
-				query: {...router.query, sort: sort?.toLocaleUpperCase(), sortOrder}
+				query: {...router.query, sortOrder: sort?.toLocaleUpperCase(), sortBy}
 			});
 		}else {
 			const query = router.query;
-			if(query.sort) {
-				delete query.sort;
+			if(query.sortBy) {
+				delete query.sortBy;
 			}
 			if((query.sortOrder)) {
 				delete query.sortOrder;
@@ -92,8 +92,8 @@ const AllInvoices = () => {
 				requestParams.limit = itemPerPage;
 				requestParams.offset =  (activePage - 1) * itemPerPage;
 	
-				if(queryParams.sort && queryParams.sortOrder) {
-					requestParams.sort = queryParams.sort;
+				if(queryParams.sortBy && queryParams.sortOrder) {
+					requestParams.sortBy = queryParams.sortBy;
 					requestParams.sortOrder = queryParams.sortOrder;
 				}
 	
@@ -130,7 +130,7 @@ const AllInvoices = () => {
 			flex: 1,
 		},
 		{
-			field: "company",
+			field: "companyName",
 			headerName: "Company",
 			sortable: true,
 			minWidth: 100,
@@ -177,7 +177,7 @@ const AllInvoices = () => {
 			valueGetter: (params: GridValueGetterParams) => params.row.invoice.projectCode,
 		},
 		{
-			field: "number",
+			field: "price",
 			headerName: "Price",
 			sortable: true,
 			minWidth: 100,

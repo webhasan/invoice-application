@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 		const invoiceResponse = await api.getInvoice(invoiceId, token);
 		const clientResponse = await api.getClients({token});
 
-		const clientData = clientResponse?.clients.map((client) => ({
+		const clientData = clientResponse?.results.map((client) => ({
 			label: client.name,
 			id: client.id,
 		}));

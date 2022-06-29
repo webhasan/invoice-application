@@ -1,5 +1,6 @@
-import apiRequest from "./apiRequest";
+import {apiRequest, graphQLRequest, setTokenToGraphQLRequest} from "./apiRequest";
 import { handleError } from "./handleError";
+import { gql } from "@apollo/client";
 
 import type { ClientData, InvoiceWithClientDetails, InvoiceData} from "../types";
 
@@ -11,8 +12,20 @@ type LoginResponseType = {
 };
 
 type ClientsResponseData = {
-	clients: ClientData[];
-	total: number;
+	clients: {
+		results: {
+			id: string;
+			user_id: string;
+			name: string;
+			email: string;
+			totalBilled: number;
+			invoicesCount: number;
+			companyDetails: {
+				name: string;
+			}
+		}[];
+		total: number;
+	}
 };
 
 type InvoiceResponseData = {
@@ -38,7 +51,7 @@ type getClientsPropsType = {
 	token?:string | null,    
 	limit?: number,
 	offset?: number,
-	sort?: "asc" | "desc",
+	sortBy?: 'ASC' | 'DESC',
 	sortOrder?: string,
 	filter?: Record<string, any>
 }
@@ -79,7 +92,7 @@ const getInvoices = async ({limit, offset, sortBy, sortOrder, filter}: getInvoic
   
   if(sortBy && sortOrder) {
 		queryParams.sort = {
-			 [sortOrder]: sortBy
+			 [sortBy]: sortOrder.toLowerCase()
 		}
   }
 
@@ -131,42 +144,88 @@ const editInvoice = async (id: string, data:InvoiceSubmissionType ) => {
 	}
 }
 
-const getClients = async ({token, limit, offset, sort, sortOrder, filter}: getClientsPropsType = {}) => {
+const getClients = async ({token, limit, offset, sortBy, sortOrder, filter}: getClientsPropsType = {}) => {
 
-	const queryParams: Record<string, any> = {}
+	// const queryParams: Record<string, any> = {}
 	
-	let headerToken = {}
+	// let headerToken = {}
 
-	if(token) {
-		headerToken = { Authorization:  'Bearer ' + token }
-	}
+	// if(token) {
+	// 	headerToken = { Authorization:  'Bearer ' + token }
+	// }
 
-	if(limit) {
-		queryParams.limit = limit;
-  	}
+	// if(limit) {
+	// 	queryParams.limit = limit;
+  	// }
 
-   if(offset) {
-		queryParams.offset = offset;
-   }
-  
-  if(sort && sortOrder) {
-		console.log(sort, sortOrder)
-		queryParams.sort = {
-			 [sortOrder]: sort
+   // if(offset) {
+	// 	queryParams.offset = offset;
+   // }
+
+	// 	if(sortBy && sortOrder) {
+	// 		queryParams.sort = {
+	// 			 [sortBy]: sortOrder.toLowerCase()
+	// 		}
+	//   }
+
+	//   if(filter) {
+	// 	queryParams.filter = filter;
+	//   }
+
+
+	//const encodeParamsString = encodeURIComponent(JSON.stringify(queryParams));
+
+	let queryParams = '';
+
+	if(limit || (sortBy && sortOrder) || offset) {
+		queryParams += "(";
+
+		if(limit) {
+			queryParams += `limit: ${limit}`;
 		}
-  }
 
-  if(filter) {
-	queryParams.filter = filter;
-  }
+		if(sortBy && sortOrder) {
+			queryParams += `, sort: {${sortBy} : ${sortOrder.toLocaleLowerCase()}}`;
+		}  
 
-  const encodeParamsString = encodeURIComponent(JSON.stringify(queryParams));
+		if(offset) {
+			queryParams += `, offset: ${offset}`;
+		}  
 
+		queryParams += ")";
+	}
+	queryParams = queryParams.replace(/^, /, '');
+
+   if(token) {
+		setTokenToGraphQLRequest(graphQLRequest, token);
+	}
 	try {
-		const { data } = await apiRequest.get<ClientsResponseData>(`clients?params=${encodeParamsString}`, {
-			headers:{...headerToken}
+		// const { data } = await apiRequest.get<ClientsResponseData>(`clients?params=${encodeParamsString}`, {
+		// 	headers:{...headerToken}
+		// });
+
+		const {data} = await graphQLRequest.query<ClientsResponseData>({
+		  query: gql`
+				query {
+					clients${queryParams}{
+					total 
+					results {
+						id
+							name
+						email
+						totalBilled
+						invoicesCount
+						companyDetails {
+							name
+							address
+						}
+					}
+					}
+				}
+		  `
 		});
-		return data;
+
+		return data.clients;
 	} catch (error) {
 		handleError(error);
 	}
@@ -311,8 +370,8 @@ const getClientIdByCompany = async(companyName: string ) => {
 	let clientId: string  = '0';
 	const clientsResponse = await api.getClients();
 
-	if(clientsResponse && clientsResponse.clients) {
-		const client = clientsResponse.clients.find(client => client.companyDetails.name === companyName);
+	if(clientsResponse && clientsResponse.results) {
+		const client = clientsResponse.results.find(client => client.companyDetails.name === companyName);
 		if(client) {
 			clientId = client.id;
 		}
@@ -324,8 +383,8 @@ const getClientIdByClientName = async(clientName: string ) => {
 	let clientId: string  = '0';
 	const clientsResponse = await api.getClients();
 
-	if(clientsResponse && clientsResponse.clients) {
-		const client = clientsResponse.clients.find(client => client.name === clientName);
+	if(clientsResponse && clientsResponse.results) {
+		const client = clientsResponse.results.find(client => client.name === clientName);
 		if(client) {
 			clientId = client.id;
 		}

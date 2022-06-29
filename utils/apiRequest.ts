@@ -1,11 +1,35 @@
 import axios, {AxiosError} from "axios";
+import { ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat, NormalizedCacheObject } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
 
 const apiRequest = axios.create({
-	baseURL: "http://localhost:3139/",
+	baseURL: process.env.NEXT_PUBLIC_API_REQUEST_URL,
 	headers: { "Content-Type": "application/json", Accept: "application/json" },
 });
 
+const graphQLRequestURL = new HttpLink({ uri: process.env.NEXT_PUBLIC_GRAPHQL_REQUEST_URL });
+
+ const graphQLRequest = new ApolloClient({
+	cache: new InMemoryCache(),
+});
+
+
 let interceptor: number | null = null;
+
+export const setTokenToGraphQLRequest = (graphQLRequest: ApolloClient<NormalizedCacheObject>, token: string) => {
+	const authLink = setContext((_, { headers }) => {
+		return {
+		  headers: {
+			 ...headers,
+			 authorization: 'Bearer ' + token,
+		  }
+		}
+	 });
+
+	 graphQLRequest.setLink(authLink.concat(graphQLRequestURL));
+}
+
 
 export const setAuth = (token: string, logout: () => void) => {
 
@@ -14,7 +38,8 @@ export const setAuth = (token: string, logout: () => void) => {
 	}
 
 	apiRequest.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-	
+	setTokenToGraphQLRequest(graphQLRequest, token);
+
 	interceptor = apiRequest.interceptors.response.use(
 		res => res,
 		error => {
@@ -42,8 +67,10 @@ export const setAuth = (token: string, logout: () => void) => {
 
 export const removeAuth = () => {
 	delete apiRequest.defaults.headers.common['Authorization'];
+	graphQLRequest.setLink(graphQLRequestURL); // remove header
+
 	if(interceptor !== null) {
 		apiRequest.interceptors.response.eject(interceptor);
 	}
 };
-export default apiRequest;
+export  {apiRequest, graphQLRequest}

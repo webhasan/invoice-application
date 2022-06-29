@@ -15,6 +15,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 const ClientsArchive = () => {
 	const router = useRouter();
 	const { error, status, value: clientsData, execute } = useAsync(api.getClients, false);
+	console.log('value from list page', clientsData);
+
 	const loading = status === "pending" || status === "idle";
 	const itemPerPage = 10;
 	const totalPages = clientsData?.total ? Math.ceil(clientsData?.total/itemPerPage) : null;
@@ -22,14 +24,14 @@ const ClientsArchive = () => {
 
    const handleSort = (sortData: GridSortModel) => {
 		if(sortData[0]) {
-			const {sort, field: sortOrder} = sortData[0];
+			const {sort, field: sortBy} = sortData[0];
 			router.replace({
-				query: {...router.query, sort: sort?.toLocaleUpperCase(), sortOrder}
+				query: {...router.query, sortBy, sortOrder: sort?.toLocaleUpperCase()}
 			});
 		}else {
 			const query = router.query;
-			if(query.sort) {
-				delete query.sort;
+			if(query.sortBy) {
+				delete query.sortBy;
 			}
 			if((query.sortOrder)) {
 				delete query.sortOrder;
@@ -90,8 +92,8 @@ const ClientsArchive = () => {
 				requestParams.limit = itemPerPage;
 				requestParams.offset =  (activePage - 1) * itemPerPage;
 	
-				if(queryParams.sort && queryParams.sortOrder) {
-					requestParams.sort = queryParams.sort;
+				if(queryParams.sortBy && queryParams.sortOrder) {
+					requestParams.sortBy = queryParams.sortBy;
 					requestParams.sortOrder = queryParams.sortOrder;
 				}
 	
@@ -117,7 +119,7 @@ const ClientsArchive = () => {
 
 	const columns: GridColDef[] = [
 		{
-			field: "name",
+			field: "clientName",
 			headerName: "Name",
 			valueGetter: (params: GridValueGetterParams) =>
 				params.row.name,
@@ -170,13 +172,14 @@ const ClientsArchive = () => {
 			filterable: false,
 			flex: 1,
 			renderHeader: () => (
-				<strong data-test="Invoice-count-header">Total Billed</strong>
+				<strong data-test="Invoice-count-header">Invoices Count</strong>
 			)
 		},
 
 		{
 			field: "actions-wrapper",
 			sortable: false,
+			filterable: false,
 			headerName: "",
 			flex: 0.5,
 			minWidth: 60,
@@ -230,11 +233,11 @@ const ClientsArchive = () => {
 				loading={loading}
 				columns={columns}
 				error={error}
-				rows={clientsData ? clientsData.clients : []}
+				rows={clientsData ? clientsData.results : []}
 				hideFooter={true}
 				disableColumnFilter={false}
 				onClickRow={onClickRow}
-            	onSortModelChange = {handleSort}
+            onSortModelChange = {handleSort}
 				onFilterModelChange={handleFilter}
 				onPageChange={handlePageChange}
 				currentPage={currentPage} 

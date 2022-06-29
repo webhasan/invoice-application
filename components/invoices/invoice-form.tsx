@@ -76,11 +76,6 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 
 	const { fields, append, remove } = useFieldArray({ name: 'items', control });
 
-	const selectedClient = defaultClient ?? clients.find(client => client.id === watch('client_id'));
-
-	console.log(watch('client_id'));
-
-
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
 		if (processingSubmit) {

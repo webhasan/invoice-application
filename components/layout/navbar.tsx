@@ -104,45 +104,14 @@ const ResponsiveAppBar = () => {
 								display: { xs: "block", md: "none" },
 							}}
 						>
-								<MenuItem>
-									<Typography textAlign="center">
-										<Link href="/">
-											Home
-										</Link>
-									</Typography>
-
-									{!user &&
-										<>
-											<Typography textAlign="center">
-												<Link href="/login">
-													Login
-												</Link>
-											</Typography>
-											<Typography textAlign="center">
-												<Link href="/sign-up">
-													Sign Up
-												</Link>
-											</Typography>
-										</>
-									}
-
-									{user &&
-										<>
-											<Typography textAlign="center">
-												<Link href="/clients">
-													Clients
-												</Link>
-											</Typography>
-											<Typography textAlign="center">
-												<NavLink href="/invoices">
-													Invoices
-												</NavLink>
-											</Typography>
-										</>
-									}
-								</MenuItem>
+								<NavLink type="MenuItem" href="/">Home</NavLink>
+								{!user && <NavLink type="MenuItem" href="/login">Login</NavLink>}
+								{!user && <NavLink type="MenuItem" href="/login">Sign Up</NavLink>}
+								{user && <NavLink type="MenuItem" href="/clients">Clients</NavLink>}
+								{user && <NavLink type="MenuItem" href="/invoices">Invoices</NavLink>}
 						</Menu>
 					</Box>
+
 					<AdbIcon
 						sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
 					/>
@@ -164,48 +133,25 @@ const ResponsiveAppBar = () => {
 					>
 						LOGO
 					</Typography>
+
 					<Box
 						sx={{
 							flexGrow: 1,
 							display: { xs: "none", md: "flex", justifyContent:"flex-end" },
 						}}
 					>
-
-						<Button sx={{ my: 2, color: "white", display: "block" }}>
-							<Link href="/">
-								Home
-							</Link>
-						</Button>
-
+						<NavLink type="Button" href="/">Home</NavLink>
 						{!user && 
 							<>
-								<Button sx={{ my: 2, color: "white", display: "block" }}>
-									<Link href="/login">
-										Login
-									</Link>
-								</Button>
-
-								<Button sx={{ my: 2, color: "white", display: "block" }}>
-									<Link href="/sign-up">
-										Signup
-									</Link>
-								</Button>
+								<NavLink type="Button" href="/login">Login</NavLink>
+								<NavLink type="Button" href="/signup">Sign Up</NavLink>
 							</>
 						}
 
 						{user && 
 							<>
-								<Button sx={{ my: 2, color: "white", display: "block" }}>
-									<Link href="/clients">
-										Clients
-									</Link>
-								</Button>
-
-								<Button sx={{ my: 2, color: "white", display: "block" }}>
-									<Link href="/invoices">
-										Invoices
-									</Link>
-								</Button>
+								<NavLink type="Button" href="/clients">Clients</NavLink>
+								<NavLink type="Button" href="/invoices">Invoices</NavLink>
 							</>
 						}
 					</Box>
@@ -220,6 +166,7 @@ const ResponsiveAppBar = () => {
 									<Avatar>{user.name.charAt(0)}</Avatar>
 								</IconButton>
 							</Tooltip>
+							
 							<Menu
 								sx={{ mt: "45px" }}
 								id="menu-appbar"
@@ -236,19 +183,9 @@ const ResponsiveAppBar = () => {
 								open={Boolean(anchorElUser)}
 								onClose={handleCloseUserMenu}
 							>
-								<Link href="/company-details">
-									<MenuItem>
-										<Typography textAlign="center">
-											Company Details
-										</Typography>
-									</MenuItem>
-								</Link>
-
-								<MenuItem onClick={handleLogout} data-test='logout-button'>
-									<Typography textAlign="center">
-										Logout
-									</Typography>
-								</MenuItem>
+								<NavLink type="MenuItem" href="/company-details">Company Details</NavLink>
+								<NavLink type="MenuItem" onClick={handleLogout} data-test='logout-button'>Logout</NavLink>
+								
 							</Menu>
 						</Box>
 					)}

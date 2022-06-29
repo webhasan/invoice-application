@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, res, query}) 
    try {
       const response = await api.getClients({token});
 
-      const clientData = response?.clients.map(client => ({
+      const clientData = response?.results.map(client => ({
          label: client.name,
          id: client.id
       }));

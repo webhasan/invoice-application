@@ -16,7 +16,7 @@ const AddClient = () => {
 			await api.addClient(data);
 			setProcessingSubmit(false);
          toast.success(
-            <span data-test="success-message">Successfully added new client</span>
+            <span data-test="form-success">Successfully added new client</span>
          );
          setProcessingSubmit(false);
 		} catch (error) {

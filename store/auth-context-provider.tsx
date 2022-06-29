@@ -72,8 +72,7 @@ const AuthContextProvider: FC<propsType> = ({ children }) => {
 				setCookies("auth", response);
 				
             const userDetails = await api.getUserByToken(response.token);
-				console.log('user-details',userDetails);
-
+				
 				let userInfo = {
 					name: response.name,
 					email: response.email,

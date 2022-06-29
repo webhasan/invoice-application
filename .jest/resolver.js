@@ -7,7 +7,7 @@ module.exports = (path, options) => {
        packageFilter: pkg => {
            // jest-environment-jsdom 28+ tries to use browser exports instead of default exports,
            // but @hookform/resolvers only offers an ESM browser export and not a CommonJS one. Jest does not yet
-           // support ESM modules natively, so this causes a Jest error related to trying to parse
+           // support ESM stmodules natively, so this causes a Jest error related to trying to parse
            // "export" syntax.
            //
            // This workaround prevents Jest from considering @hookform/resolvers module-based exports at all;

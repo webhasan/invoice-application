@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 
 const LatestClients = () => {
 	const router = useRouter();
-	const { error, status, value} = useAsync(api.getClients, true, {limit: 10, sort: 'DESC', sortOrder: 'creation'});
+	const { error, status, value} = useAsync(api.getClients, true, {limit: 10, sortBy: 'creation', sortOrder: 'DESC'});
 	const loading = status === "pending" || status === "idle";
 
 	const onClickRow = (params: GridRowParams<any>) => {
@@ -131,7 +131,7 @@ const LatestClients = () => {
 				loading={loading}
 				columns={columns}
 				error={error}
-				rows={value ? value.clients : []}
+				rows={value ? value.results : []}
 				hideFooter={true}
 				disableColumnFilter={true}
 				onClickRow={onClickRow}

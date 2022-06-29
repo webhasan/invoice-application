@@ -91,12 +91,11 @@ const CompanyDetailsForm: React.FC = () => {
 			setCompanyDetailsError(null);
 			setProcessingSubmit(false);
 			updateUserCompany(data)
-			
-			const successRedirectURL = router.query.redirect;
+		
 			if(isFirstSetup) {
 				router.push('/');
 			}else {
-				toast.success(<span data-test="form-success">Successfully updated company details.</span>);
+				toast.success(<span data-test="success-message">Successfully updated company details.</span>);
 			}
 
 		} catch (error) {

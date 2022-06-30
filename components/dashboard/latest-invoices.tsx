@@ -21,52 +21,51 @@ const LatestInvoices = () => {
 
 	const columns: GridColDef[] = [
 		{
-			field: "clientName",
-			headerName: "Client",
-         	valueGetter: (params: GridValueGetterParams) => params.row.client.name,
+			field: "invoice-number",
+			headerName: "# Number",
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
 			editable: false,
 			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.invoice.invoice_number,
 		},
 		{
-			field: "company",
+			field: "invoice-company",
 			headerName: "Company",
-			valueGetter: (params: GridValueGetterParams) => params.row.client.companyDetails.name,
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
 			editable: false,
 			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.client.companyDetails.name,
 		},
 		{
-			field: "date",
+			field: "invoice-date",
 			headerName: "Date",
-         	valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.date),
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
-			flex: 1,
+			flex: 2,
+			valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.date),
 		},
 		{
-			field: "project",
+			field: "invoice-project",
 			headerName: "Project",
-         	valueGetter: (params: GridValueGetterParams) => params.row.invoice.projectCode,
 			sortable: false,
-			type: "number",
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.invoice.projectCode,
 		},
 		{
-			field: "number",
+			field: "invoice-price",
 			headerName: "Price",
-         	valueGetter: (params: GridValueGetterParams) => params.row.invoice.value,
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.invoice.value,
 		},
 
 		{
@@ -132,7 +131,7 @@ const LatestInvoices = () => {
 				name="invoices"
 				dataTest="invoices-table"
 				onClickRow = {onClickRow}
-            	rowColTestPrefix="invoice"
+            rowColTestPrefix="invoice"
 				loading={loading}
 				columns={columns}
 				error={error}

@@ -30,7 +30,7 @@ type Inputs = {
 const schema = object({
 	email: string()
 		.email("Invalid email address")
-		.required("Email is required."),
+		.required("Email is required"),
 	password: string()
 		.required("Password is required.")
 		.min(5, "Password must be at least 5 characters")
@@ -182,7 +182,7 @@ const LoginForm: React.FC = () => {
 					</LoadingButton>
 
 					<div className="text-center">
-						<NextLink href="/sign-up" passHref>
+						<NextLink href="/signup" passHref>
 							<Link variant="body2">
 								{"Don't have an account? Sign Up"}
 							</Link>

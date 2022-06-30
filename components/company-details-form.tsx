@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, ref } from "yup";
+import { object, string } from "yup";
 import { AuthContext } from "../store/auth-context";
 import { useContext } from "react";
 import { useRouter } from "next/router";
@@ -15,7 +15,6 @@ import { toast } from "material-react-toastify";
 import { api } from "../utils/api";
 
 //type
-import { CompanyDetails } from "../types";
 import { ucFirst } from "../utils/functions";
 
 type Inputs = {
@@ -60,13 +59,10 @@ const CompanyDetailsForm: React.FC = () => {
 	});
 
 	useEffect(() => {
-		if(router.isReady) {
-			const notification = router.query?.notification;
-			if(notification === 'no-company-details') {
-				toast.warn('Please fill company details to use app.');
-			}
+		if(!user?.companyDetails) {
+			toast.warn('Please fill company details to use app.');
 		}
-	}, [router.isReady, router.query])
+	}, [user])
 
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
 		if (processingSubmit) {

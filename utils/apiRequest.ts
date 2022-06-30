@@ -62,12 +62,11 @@ export const setAuth = (token: string, logout: () => void) => {
 			return Promise.reject(error);
 		}
 	);
-
 };
 
 export const removeAuth = () => {
-	delete apiRequest.defaults.headers.common['Authorization'];
-	graphQLRequest.setLink(graphQLRequestURL); // remove header
+
+	graphQLRequest.setLink(graphQLRequestURL);
 
 	if(interceptor !== null) {
 		apiRequest.interceptors.response.eject(interceptor);

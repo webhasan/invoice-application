@@ -42,7 +42,7 @@ const schema = object({
 const SignupForm: React.FC = () => {
 	const router = useRouter();
 	const { status } = useContext(AuthContext);
-	const [isProcessingLogin, setIsProcessingLogin] = useState(false);
+	const [processFormSubmit, setProcessFormSubmit] = useState(false);
 	const [signupError, setSignupError] = useState<string | null>(null);
 
 	const {
@@ -54,20 +54,20 @@ const SignupForm: React.FC = () => {
 	});
 
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
-		if (isProcessingLogin) {
+		if (processFormSubmit) {
 			return false;
 		}
-		setIsProcessingLogin(true);
+		setProcessFormSubmit(true);
 
 		const { name, email, password, confirmPassword } = data;
 
 		try {
 			const data = await api.signUp(name, email, password, confirmPassword);
 			setSignupError(null);
-			setIsProcessingLogin(false);
+			setProcessFormSubmit(false);
 			router.push('/login?notification=signup-success')
 		}catch(error) {
-			setIsProcessingLogin(false);
+			setProcessFormSubmit(false);
 			setSignupError(error as string);
 		}
 	};
@@ -181,7 +181,7 @@ const SignupForm: React.FC = () => {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 						data-test="submit-sign-up"
-						loading={!!isProcessingLogin}
+						loading={!!processFormSubmit}
 					>
 						Sign Up
 					</LoadingButton>

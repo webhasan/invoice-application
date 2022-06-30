@@ -222,7 +222,8 @@ const getClients = async ({token, limit, offset, sortBy, sortOrder, filter}: get
 					}
 					}
 				}
-		  `
+		  `,
+		  fetchPolicy: 'network-only',
 		});
 
 		return data.clients;

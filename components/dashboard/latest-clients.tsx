@@ -20,49 +20,43 @@ const LatestClients = () => {
 
 	const columns: GridColDef[] = [
 		{
-			field: "name",
+			field: "client-name",
 			headerName: "Name",
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
 			editable: false,
 			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.name,
 		},
 		 
 		{
-			field: "companyName",
-			headerName: "Company Name",
-			valueGetter: (params: GridValueGetterParams) => params.row.companyDetails.name,
+			field: "client-companyName",
+			headerName: "Company",
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
 			editable: false,
 			flex: 1,
-		},
-
-		{
-			field: "email",
-			headerName: "Email Address",
-			sortable: false,
-			minWidth: 100,
-			filterable: false,
-			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.companyDetails.name,
 		},
 		{
-			field: "totalBilled",
+			field: "client-totalBilled",
 			headerName: "Total Billed",
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.totalBilled,
 		},
 		{
-			field: "invoicesCount",
+			field: "client-invoicesCount",
 			headerName: "Invoices Count",
 			sortable: false,
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.invoicesCount,
 		},
 
 		{

@@ -39,7 +39,7 @@ const schema = object({
 
 	name: string()
 		.required("Client name is required")
-		.min(3, "Client name must be at least 5 characters"),
+		.min(3, "Client name must be at least 3 characters"),
 
 	companyName: string().required("Company name is required"),
 

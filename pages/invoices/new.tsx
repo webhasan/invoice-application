@@ -44,17 +44,18 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
        };
    }
 
-   let clients: clientType = [];
 
    try {
-      const response = await api.getClients({token});
-      const clientData = response?.results.map(client => ({
-         label: client.name,
-         id: client.id
-      }));
+      const response = await api.getClientsCompany(token);
+      if(response) {
+         let clients = response.map(client => ({
+            label: client.companyName,
+            id: client.id
+         }));
 
-      if(clientData) {
-         clients  = clientData;
+         return {
+            props: {clients}
+         }
       }
    }catch(e) {
       if(e === 'Invalid Token') {
@@ -68,6 +69,6 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
    }
 
    return {
-      props: {clients}
+      props: {}
    }
 }

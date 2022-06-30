@@ -157,7 +157,7 @@ const ResponsiveAppBar = () => {
 					</Box>
 					
 					{user && (
-						<Box sx={{ flexGrow: 0 }}>
+						<Box sx={{ flexGrow: 0, marginLeft: 2 }}>
 							<Tooltip title="Open settings">
 								<IconButton
 									onClick={handleOpenUserMenu}

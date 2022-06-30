@@ -14,7 +14,8 @@ import {
 	GridSortModel,
 	GridFilterModel
 } from "@mui/x-data-grid";
-import Pagination from "@mui/material/Pagination";
+import Pagination, { PaginationRenderItemParams } from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
 
 type propsTypes = {
 	name: string;
@@ -119,6 +120,7 @@ const DataTable: FC<propsTypes> = ({
 					page={currentPage}
 					shape="rounded" 
 					onChange={onPageChange}
+					renderItem = { (item: PaginationRenderItemParams) => <PaginationItem {...item} data-test={`page-${item.page}`}/>}
 					sx={{
 						marginTop: 4, 
 						marginBottom: 10,  

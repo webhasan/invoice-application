@@ -191,7 +191,7 @@ const ClientsArchive = () => {
 					},
 					{
 						title: "Crate Invoice",
-						url: "/clients/" + params.row.id + "/create",
+						url: "/clients/" + params.row.id + "/create-invoice",
 					},
 				];
 				return (

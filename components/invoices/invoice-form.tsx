@@ -20,7 +20,7 @@ export type Inputs = {
 	date: string;
 	dueDate: string;
 	invoice_number: string;
-	projectCode: string;
+	projectCode?: string;
 	items: {description: string, price: number}[],
    client_id: string;
 };
@@ -53,7 +53,7 @@ type PropsType = {
    ) => void;
    clients: {label: string, id: string}[];
 	defaultValues?: Inputs;
-	defaultClient?: {label: string; id: string;}
+	defaultClient?: string;
    submitButtonText: string;
 }
 
@@ -71,7 +71,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 		formState: { errors }
 	} = useForm<Inputs>({
 		resolver: yupResolver(schema),
-		defaultValues: defaultValues ?? {client_id: defaultClient?.id ?? undefined}
+		defaultValues: defaultValues ?? {client_id: defaultClient ?? undefined}
 	});
 
 	const { fields, append, remove } = useFieldArray({ name: 'items', control });
@@ -147,7 +147,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 						error={!!errors.dueDate}
 						helperText={
 							errors.dueDate && (
-								<span data-test="invoice-due-date-error">
+								<span data-test="invoice-dueDate-error">
 									{errors.dueDate?.message}
 								</span>
 							)
@@ -164,7 +164,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 						error={!!errors.invoice_number}
 						helperText={
 							errors.invoice_number && (
-								<span data-test="invoice-number-error">
+								<span data-test="invoice-invoice_number-error">
 									{errors.invoice_number?.message}
 								</span>
 							)
@@ -182,7 +182,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 						error={!!errors.projectCode}
 						helperText={
 							errors.projectCode && (
-								<span data-test="invoice-project-code-error">
+								<span data-test="invoice-projectCode-error">
 									{errors.projectCode?.message}
 								</span>
 							)
@@ -209,14 +209,14 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 									</li>
 								)}
 								renderInput={(params) => {
-									const inputProps = {...params.inputProps, 'data-test': 'invoice-user-id'}
+									const inputProps = {...params.inputProps, 'data-test': 'invoice-company-id'}
 									return <TextField  
-										label="Client" 
+										label="Company* " 
 										error={!!errors.client_id}
 										margin="normal"
 										helperText= {
 											errors.client_id && (
-												<span data-test="invoice-user-id-error">
+												<span data-test="invoice-client_id-error">
 													{errors.client_id?.message}
 												</span>
 											)
@@ -232,7 +232,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 					
                {fields.map((field, index) => {
                   return (
-                     <Grid container key={field.id} alignItems="center" spacing={1} data-test={`invoice-item-${index}`}>
+                     <Grid container key={field.id} alignItems="center" spacing={1} data-test={`invoice-item-${index + 1}`}>
                         <Grid item xs={1}>
                         <IconButton aria-label="delete" onClick={() => remove(index)}>
                            <DeleteIcon color="error"/>
@@ -249,7 +249,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
                               error={!!errors.items?.[index]?.description}
                               helperText={
                                  errors.items?.[index]?.description && (
-                                    <span data-test="invoice-item-description-error">
+                                    <span data-test={`invoice-items.${index}.description-error`}>
                                        {errors.items?.[index]?.description?.message}
                                     </span>
                                  )
@@ -268,7 +268,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
                               error={!!errors.items?.[index]?.price}
                               helperText={
                                  errors.items?.[index]?.price && (
-                                    <span data-test="invoice-item-value-error">
+                                    <span data-test={`invoice-items.${index}.price-error`}>
                                        {errors.items?.[index]?.price?.message}
                                     </span>
                                  )

@@ -276,7 +276,7 @@ exports[`DataTable component Initial render of data table 1`] = `
                   class="MuiDataGrid-row"
                   data-id="1644482450322"
                   data-rowindex="0"
-                  data-test="client-id-1644482450322"
+                  data-test="client-row-1644482450322"
                   role="row"
                   style="max-height: 52px; min-height: 52px;"
                 >
@@ -338,7 +338,7 @@ exports[`DataTable component Initial render of data table 1`] = `
                   class="MuiDataGrid-row MuiDataGrid-row--lastVisible"
                   data-id="5235235235"
                   data-rowindex="1"
-                  data-test="client-id-5235235235"
+                  data-test="client-row-5235235235"
                   role="row"
                   style="max-height: 52px; min-height: 52px;"
                 >

@@ -332,7 +332,7 @@ exports[`ClientForm component initial render of the component 1`] = `
         </div>
         <button
           class="MuiLoadingButton-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-fullWidth MuiButtonBase-root css-1qudo6r-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root"
-          data-test="submit-login"
+          data-test="submit-client"
           id=":r8:"
           tabindex="0"
           type="submit"
@@ -680,12 +680,12 @@ exports[`ClientForm component render with default value 1`] = `
         </div>
         <button
           class="MuiLoadingButton-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-fullWidth MuiButtonBase-root css-1qudo6r-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root"
-          data-test="submit-login"
+          data-test="submit-client"
           id=":rh:"
           tabindex="0"
           type="submit"
         >
-          Add Client
+          Update Client
           <span
             class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
           />

@@ -27,7 +27,7 @@ export default NewInvoicePage;
 
 
 export const getServerSideProps: GetServerSideProps = async ({req, res, query}) => {
-   const clientId = query.id;
+   const defaultClient = query.id;
    const cookie = getCookie('auth', {req, res});
    let token = null;
 
@@ -46,23 +46,25 @@ export const getServerSideProps: GetServerSideProps = async ({req, res, query}) 
    }
 
    try {
-      const response = await api.getClients({token});
+      const clientResponse = await api.getClientsCompany(token);
 
-      const clientData = response?.results.map(client => ({
-         label: client.name,
+      const clients = clientResponse?.map(client => ({
+         label: client.companyName,
          id: client.id
       }));
 
-      if(clientData) {
-         const defaultClient = clientData.find(client => client.id === clientId);
-         if(!defaultClient) {
+      if(clients) {
+         // not found client
+         const defaultClientInfo = clients.find(client => client.id === defaultClient);
+         if(!defaultClientInfo) {
             return {
                notFound: true
             }
          }
+
          return {
             props: {
-               clients: clientData,
+               clients,
                defaultClient
             }
          }
@@ -77,7 +79,6 @@ export const getServerSideProps: GetServerSideProps = async ({req, res, query}) 
          }
       }
    }
-
 
    return {
       props: {}

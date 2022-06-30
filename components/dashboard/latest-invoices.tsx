@@ -21,7 +21,7 @@ const LatestInvoices = () => {
 
 	const columns: GridColDef[] = [
 		{
-			field: "invoice-number",
+			field: "number",
 			headerName: "# Number",
 			sortable: false,
 			minWidth: 100,
@@ -31,7 +31,7 @@ const LatestInvoices = () => {
 			valueGetter: (params: GridValueGetterParams) => params.row.invoice.invoice_number,
 		},
 		{
-			field: "invoice-company",
+			field: "company",
 			headerName: "Company",
 			sortable: false,
 			minWidth: 100,
@@ -41,7 +41,7 @@ const LatestInvoices = () => {
 			valueGetter: (params: GridValueGetterParams) => params.row.client.companyDetails.name,
 		},
 		{
-			field: "invoice-date",
+			field: "date",
 			headerName: "Date",
 			sortable: false,
 			minWidth: 100,
@@ -50,7 +50,7 @@ const LatestInvoices = () => {
 			valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.date),
 		},
 		{
-			field: "invoice-project",
+			field: "project",
 			headerName: "Project",
 			sortable: false,
 			minWidth: 100,
@@ -59,7 +59,7 @@ const LatestInvoices = () => {
 			valueGetter: (params: GridValueGetterParams) => params.row.invoice.projectCode,
 		},
 		{
-			field: "invoice-price",
+			field: "price",
 			headerName: "Price",
 			sortable: false,
 			minWidth: 100,
@@ -83,6 +83,7 @@ const LatestInvoices = () => {
 					{
 						title: "Print Invoice",
 						url: "/invoices/" + params.row.id + "/view/?print=true",
+						'data-test': "invoice-print"
 					},
 				];
 				return (

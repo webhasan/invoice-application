@@ -6,7 +6,7 @@ export type InvoiceData = {
    date: number
    dueDate: number
    value: number
-   projectCode: string
+   projectCode?: string
    meta?: Record<string, any>
 };
 

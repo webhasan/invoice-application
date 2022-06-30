@@ -18,23 +18,21 @@ const InvoiceInfo:FC<PropsType> = ({title, invoiceNumber, invoiceDate, dueDate, 
 				{title}
 			</Typography>
 			<Typography component="p">
-				<strong data-test="invoice-number">Novice Number: </strong>
-				{invoiceNumber}
+				<strong>Novice Number: </strong>
+				<span data-test="invoice-number">{invoiceNumber}</span>
 			</Typography>
 			<Typography component="p">
-				<strong data-test="invoice-date">Date: </strong>
-				{formatDate(invoiceDate)}
+				<strong>Date: </strong>
+				<span data-test="invoice-date">{formatDate(invoiceDate)}</span>
 			</Typography>
 			<Typography component="p">
-				<strong data-test="invoice-due-date">Due Date: </strong>
-				{formatDate(dueDate)}
+				<strong>Due Date: </strong>
+				<span data-test="invoice-due-date">{formatDate(dueDate)}</span>
 			</Typography>
 			{projectCode && (
 				<Typography component="p">
-					<strong data-test="invoice-project-code">
-						Project Code:{" "}
-					</strong>
-					{projectCode}
+					<strong> Project Code: </strong>
+					<span data-test="invoice-project-code">{projectCode}</span>
 				</Typography>
 			)}
 		</Grid>

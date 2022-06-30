@@ -15,7 +15,7 @@ export type InvoiceDefaultValue = {
 	date: string;
 	dueDate: string;
 	invoice_number: string;
-	projectCode: string;
+	projectCode?: string;
 	items: { description: string; price: number }[];
 	client_id: string;
 };
@@ -59,38 +59,40 @@ export const getServerSideProps: GetServerSideProps = async ({
 		};
 	}
 
-	let clients: clientType | null = null;
-	let invoice: InvoiceDefaultValue | null = null;
 
 	try {
 		const invoiceResponse = await api.getInvoice(invoiceId, token);
-		const clientResponse = await api.getClients({token});
+		const clientResponse = await api.getClientsCompany(token);
 
-		const clientData = clientResponse?.results.map((client) => ({
-			label: client.name,
-			id: client.id,
-		}));
 
-		if (clientData) {
-			clients = clientData;
-		}
+		if (invoiceResponse?.invoice && clientResponse) {
+			const clients = clientResponse.map((client) => ({
+				label: client.companyName,
+				id: client.id,
+			}));
 
-		if (invoiceResponse?.invoice) {
-			invoice = {
-				date: new Date(invoiceResponse.invoice.date)
-					.toISOString()
-					.split("T")[0],
-				dueDate: new Date(invoiceResponse.invoice.dueDate)
-					.toISOString()
-					.split("T")[0],
+			let invoice: InvoiceDefaultValue = {
+				date: new Date(invoiceResponse.invoice.date).toISOString().split("T")[0],
+				dueDate: new Date(invoiceResponse.invoice.dueDate).toISOString().split("T")[0],
 				invoice_number: invoiceResponse.invoice.invoice_number,
-				projectCode: invoiceResponse.invoice.projectCode,
 				items:
 					invoiceResponse.invoice?.meta &&
 					invoiceResponse.invoice?.meta.items
 						? invoiceResponse.invoice?.meta.items
 						: [],
 				client_id: invoiceResponse.invoice.client_id,
+			};
+
+			if(invoiceResponse.invoice.projectCode) {
+				invoice.projectCode = invoiceResponse.invoice.projectCode;
+			}
+
+			return {
+				props: {
+					clients, 
+					invoice,
+					id: invoiceId
+				},
 			};
 		}
 	} catch (e) {
@@ -111,10 +113,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 	}
 
 	return {
-		props: {
-         clients, 
-         invoice,
-         id: invoiceId
-		},
+		props: {}
 	};
 };

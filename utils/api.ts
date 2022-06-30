@@ -232,6 +232,24 @@ const getClients = async ({token, limit, offset, sortBy, sortOrder, filter}: get
 	}
 };
 
+const getClientsCompany = async (token?: string) => {
+	let headerToken = {}
+	if(token) {
+		headerToken = { Authorization:  'Bearer ' + token }
+	}
+
+	try {
+		const { data } = await apiRequest.get<{success: boolean, clients: {id: string; companyName: string;}[]}>(`clients/names`, {
+			headers:{...headerToken}
+		});
+
+		return data.clients;
+
+	} catch (error) {
+		handleError(error);
+	}
+}
+
 const login = async (email: string, password: string) => {
 	try {
 		const { data } = await apiRequest.post<LoginResponseType>("login", {
@@ -399,6 +417,7 @@ export const api = {
 	getInvoice,
 	editInvoice,
 	getClients,
+	getClientsCompany,
 	addClient,
 	editClient,
 	login,

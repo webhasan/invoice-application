@@ -7,7 +7,7 @@ import React from 'react';
 
 type propsType = {
    dataTest?: string;
-   menuItems: {title: string; url: string}[]
+   menuItems: {title: string; url: string; 'date-test'?: string;}[]
 }
 const ActionMenu: React.FC<propsType> = ({menuItems, dataTest}) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -36,10 +36,13 @@ const ActionMenu: React.FC<propsType> = ({menuItems, dataTest}) => {
 				open={open}
 				onClose={handleClose}
 			>
-            {menuItems.map((item, index) => {
-				return <MenuItem key={item.url}>
-               <Link href={item.url}>{item.title}</Link>
-            </MenuItem>
+            {menuItems.map((item) => {
+					const {url, title, ...rest} = item;
+					return (
+						<MenuItem key={url} {...rest}>
+							<Link href={url}>{title}</Link>
+						</MenuItem>
+					)
             })}
 			</Menu>
 		</div>

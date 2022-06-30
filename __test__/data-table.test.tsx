@@ -1,10 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import DataTable from '../components/data-table/data-table';
 import ActionMenu from '../components/data-table/action-menu';
 import { GridColDef, GridValueGetterParams } from '@mui/x-data-grid/models';
-import { formatDate } from '../utils/functions';
+import { expect } from '@jest/globals';
 
 const dummyClientsData = [
    {

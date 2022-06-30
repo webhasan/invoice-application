@@ -11,6 +11,21 @@ import Container from "@mui/material/Container";
 import {formatDate} from '../../utils/functions';
 import { ChangeEvent, useEffect, useState } from "react";
 
+
+const sortByValue = {
+	'company' : 'companyName',
+	'date' : 'creationDate',
+	'due-date' : 'dueDate',
+	'price' : 'total'
+}
+
+const sortByQueryParam = {
+	'companyName' : 'companyName',
+	'creationDate' : 'date',
+	'dueDate' : 'dueDate',
+	'total' : 'price'
+}
+
 const AllInvoices = () => {
 	const router = useRouter();
 	const { error, status, value, execute } = useAsync(api.getInvoices, false);
@@ -21,10 +36,14 @@ const AllInvoices = () => {
 
 	const handleSort = (sortData: GridSortModel) => {
 		if(sortData[0]) {
-			const {sort, field: sortBy} = sortData[0];
-			router.replace({
-				query: {...router.query, sortOrder: sort?.toLocaleUpperCase(), sortBy}
-			});
+			const {sort, field} = sortData[0];
+			const sortBy = sortByValue[field as keyof typeof sortByValue];
+
+			if(sort && sortBy) {
+				router.replace({
+					query: {...router.query, sortOrder: sort?.toLocaleUpperCase(), sortBy}
+				});
+			}
 		}else {
 			const query = router.query;
 			if(query.sortBy) {
@@ -56,11 +75,11 @@ const AllInvoices = () => {
 			const {columnField, value} = filterData.items[0];
 
 			if(columnField && value) {
-				if(columnField === 'companyName') {
+				if(columnField === 'company') {
 					query = {...query, companyFilter: value}
 				}
 	
-				if(columnField === 'clientName') {
+				if(columnField === 'client') {
 					query =  {...query, clientFilter: value}
 				}
 			}
@@ -93,7 +112,8 @@ const AllInvoices = () => {
 				requestParams.offset =  (activePage - 1) * itemPerPage;
 	
 				if(queryParams.sortBy && queryParams.sortOrder) {
-					requestParams.sortBy = queryParams.sortBy;
+					const sortBy = sortByQueryParam[queryParams.sortBy as keyof typeof sortByQueryParam] ?? queryParams.sortBy;
+					requestParams.sortBy = sortBy;
 					requestParams.sortOrder = queryParams.sortOrder;
 				}
 	
@@ -120,27 +140,37 @@ const AllInvoices = () => {
 
 	const columns: GridColDef[] = [
 		{
-			field: "clientName",
+			field: "number",
+			headerName: "# Number",
+			sortable: false,
+			minWidth: 100,
+			filterable: false,
+			editable: false,
+			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.invoice.invoice_number,
+		},
+		{
+			field: "client",
 			headerName: "Client Name",
-         	valueGetter: (params: GridValueGetterParams) => params.row.client.name,
 			sortable: false,
 			minWidth: 100,
 			filterable: true,
 			editable: false,
 			flex: 1,
+			valueGetter: (params: GridValueGetterParams) => params.row.client.name,
 		},
 		{
-			field: "companyName",
+			field: "company",
 			headerName: "Company",
 			sortable: true,
 			minWidth: 100,
 			filterable: true,
 			editable: false,
 			flex: 1,
-			valueGetter: (params: GridValueGetterParams) => params.row.client.companyDetails.name,
 			renderHeader: () => (
 				<strong data-test="company-name-header">Company</strong>
-			)
+			),
+			valueGetter: (params: GridValueGetterParams) => params.row.client.companyDetails.name,
 		},
 		{
 			field: "date",
@@ -149,28 +179,27 @@ const AllInvoices = () => {
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
-			valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.date),
 			renderHeader: () => (
 				<strong data-test="creation-date-header">Date</strong>
 			),
+			valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.date),
 		},
 		{
-			field: "dueDate",
+			field: "due-date",
 			headerName: "Due Date",
 			sortable: true,
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
-			valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.dueDate),
 			renderHeader: () => (
 				<strong data-test="due-date-header">Due Date</strong>
 			),
+			valueGetter: (params: GridValueGetterParams) => formatDate(params.row.invoice.dueDate),
 		},
-		{
+		{	
 			field: "project",
 			headerName: "Project",
 			sortable: false,
-			type: "number",
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
@@ -183,10 +212,10 @@ const AllInvoices = () => {
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
-			valueGetter: (params: GridValueGetterParams) => params.row.invoice.value,
 			renderHeader: () => (
 				<strong data-test="total-header">Price</strong>
 			),
+			valueGetter: (params: GridValueGetterParams) => params.row.invoice.value,
 		},
 
 		{
@@ -205,6 +234,7 @@ const AllInvoices = () => {
 					{
 						title: "Print Invoice",
 						url: "/invoices/" + params.row.id + "/view/?print=true",
+						'data-test': "invoice-print"
 					},
 				];
 				return (

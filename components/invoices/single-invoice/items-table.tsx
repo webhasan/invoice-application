@@ -83,8 +83,8 @@ const ItemTable: FC<PropsType> = ({title, items, taxRate = 0}) => {
 						<TableCell colSpan={1} align="right">
 							<strong>Total</strong>
 						</TableCell>
-						<TableCell align="right" data-test="invoice-total">
-							${( total + total * (taxRate / 100)).toFixed(2)}
+						<TableCell align="right">
+							$<span data-test="invoice-total">{( total + total * (taxRate / 100)).toFixed(2)}</span>
 						</TableCell>
 					</TableRow>
 				</TableBody>

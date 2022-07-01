@@ -295,7 +295,7 @@ const getUser = async () => {
 
 const getUserByToken = async (token: string) => {
 	try {
-		const { data } = await apiRequest.get("me", {
+		const { data } = await apiRequest.get("/me", {
 			headers: {
 				"x-access-token": token,
 			},

@@ -14,6 +14,10 @@ const Protected: FC<propsType> = ({ children }) => {
 		router.pathname !== "/company-details" &&
 		!user?.companyDetails;
 
+	if (status === "loading") {
+		return null;
+	}
+
 	if (status === "unauthenticated") {
 		router.push(`/login`);
 		return null;

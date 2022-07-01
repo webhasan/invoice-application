@@ -61,6 +61,7 @@ const AuthContextProvider: FC<propsType> = ({ children }) => {
 	}, [loadingApp]);
 
 	const login = async (email: string, password: string) => {
+
 		const loginResponse: { error: string | null; user: userType | null } = {
 			error: null,
 			user: null,
@@ -68,6 +69,9 @@ const AuthContextProvider: FC<propsType> = ({ children }) => {
 
 		try {
 			const response = await api.login(email, password);
+
+			console.log(response);
+
 			if (response) {
 				setCookies("auth", response);
 				

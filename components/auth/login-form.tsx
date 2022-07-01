@@ -39,7 +39,7 @@ const schema = object({
 
 const LoginForm: React.FC = () => {
 	const router = useRouter();
-	const { login, status } = useContext(AuthContext);
+	const { login } = useContext(AuthContext);
 	const [showPassword, setShowPassword] = useState(false);
 	const [isProcessingLogin, setIsProcessingLogin] = useState(false);
 	const [loginError, setLoginError] = useState<string | null>(null);
@@ -72,19 +72,11 @@ const LoginForm: React.FC = () => {
 	};
 
 	useEffect(() => {
-		if(router.query.notification === 'signup-success') {
+		if(router.isReady && router.query.notification === 'signup-success') {
 			toast.success('You are successfully Signup');
 		}
 	}, [router.isReady, router.query]);
 
-	if(!router.isReady) {
-		return null;
-	}
-
-	if (status == "authenticated") {
-		router.replace("/");
-		return null;
-	}
 
 	return (
 		<Container component="main" maxWidth="xs">

@@ -120,7 +120,12 @@ const DataTable: FC<propsTypes> = ({
 					page={currentPage}
 					shape="rounded" 
 					onChange={onPageChange}
-					renderItem = { (item: PaginationRenderItemParams) => <PaginationItem {...item} data-test={`page-${item.page}`}/>}
+					renderItem = { (item: PaginationRenderItemParams) => {
+						if(item.type === 'page') {
+							return <PaginationItem {...item} data-test={`page-${item.page}`}/>
+						}
+						return <PaginationItem {...item}/>
+					}}
 					sx={{
 						marginTop: 4, 
 						marginBottom: 10,  

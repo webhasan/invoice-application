@@ -19,7 +19,6 @@ export type CompanyDetails = {
    swift?: string
 }
 
-
 export type ClientData = {
    id: string
    user_id: string
@@ -29,7 +28,6 @@ export type ClientData = {
    invoicesCount: number
    companyDetails: CompanyDetails
 };
-
 
 export type InvoiceWithClientDetails = {
    invoice: Omit<InvoiceData, "invoicesCount" | "companyDetails">

@@ -4,11 +4,10 @@ import { toast } from "material-react-toastify";
 import { FC } from "react";
 import type { Inputs } from "./invoice-form";
 import type { Dispatch, SetStateAction } from "react";
-import type { UseFormReset } from "react-hook-form/dist/types";
 
 type PropType = {
 	clients: {label: string, id: string}[]
-	defaultClient?: {label: string, id: string}
+	defaultClient?: string;
 }
 
 const AddInvoice:FC<PropType> = ({clients, defaultClient}) => {

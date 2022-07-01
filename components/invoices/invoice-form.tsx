@@ -147,7 +147,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 						error={!!errors.dueDate}
 						helperText={
 							errors.dueDate && (
-								<span data-test="invoice-dueDate-error">
+								<span data-test="invoice-due-date-error">
 									{errors.dueDate?.message}
 								</span>
 							)
@@ -164,7 +164,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 						error={!!errors.invoice_number}
 						helperText={
 							errors.invoice_number && (
-								<span data-test="invoice-invoice_number-error">
+								<span data-test="invoice-number-error">
 									{errors.invoice_number?.message}
 								</span>
 							)
@@ -182,7 +182,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 						error={!!errors.projectCode}
 						helperText={
 							errors.projectCode && (
-								<span data-test="invoice-projectCode-error">
+								<span data-test="invoice-project-code-error">
 									{errors.projectCode?.message}
 								</span>
 							)
@@ -216,7 +216,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 										margin="normal"
 										helperText= {
 											errors.client_id && (
-												<span data-test="invoice-client_id-error">
+												<span data-test="invoice-company-id-error">
 													{errors.client_id?.message}
 												</span>
 											)
@@ -249,7 +249,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
                               error={!!errors.items?.[index]?.description}
                               helperText={
                                  errors.items?.[index]?.description && (
-                                    <span data-test={`invoice-items.${index}.description-error`}>
+                                    <span data-test="invoice-item-description-error">
                                        {errors.items?.[index]?.description?.message}
                                     </span>
                                  )
@@ -268,7 +268,7 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
                               error={!!errors.items?.[index]?.price}
                               helperText={
                                  errors.items?.[index]?.price && (
-                                    <span data-test={`invoice-items.${index}.price-error`}>
+                                    <span data-test="invoice-item-value-error">
                                        {errors.items?.[index]?.price?.message}
                                     </span>
                                  )

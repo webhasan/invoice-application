@@ -4,13 +4,14 @@ describe('/invoices', () => {
 
    it('redirect login page if not logged in', () => {
       cy.clearCookies();
-      cy.visit('http://localhost:3000/invoices');
+      cy.visit('/invoices');
+      cy.wait(1000);
       cy.location('pathname').should('eq', '/login');
    });
 
    it('check all require things available in invoice table', () => {
       cy.clearCookies();
-      cy.visit('http://localhost:3000/login')
+      cy.visit('/login')
       
       cy.get('[data-test="email"]').should('be.visible');
       cy.get('[data-test="email"]').type(`${userEmail}`);
@@ -34,7 +35,7 @@ describe('/invoices', () => {
 
    it('Sorting test', () => {
       cy.clearCookies();
-      cy.visit('http://localhost:3000/login')
+      cy.visit('/login')
       
       cy.get('[data-test="email"]').should('be.visible');
       cy.get('[data-test="email"]').type(`${userEmail}`);
@@ -83,7 +84,7 @@ describe('/invoices', () => {
 
    it('Filtering test', () => {
       cy.clearCookies();
-      cy.visit('http://localhost:3000/login')
+      cy.visit('/login')
       
       cy.get('[data-test="email"]').should('be.visible');
       cy.get('[data-test="email"]').type(`${userEmail}`);
@@ -94,26 +95,26 @@ describe('/invoices', () => {
       cy.get('[data-test="view-all-invoices"]').click();
       cy.location('pathname').should('eq', '/invoices');
 
-      cy.visit('http://localhost:3000/invoices?page=1&clientFilter=Tim+Cook');
+      cy.visit('/invoices?page=1&clientFilter=Tim+Cook');
       cy.wait(3000);
       cy.get('[data-test*="invoice-row"]').each($el => {
          cy.wrap($el).find('[data-test="invoice-client"]').contains("Tim Cook");
       });
 
-      cy.visit('http://localhost:3000/invoices?page=1&clientFilter=Satya+Nadella');
+      cy.visit('/invoices?page=1&clientFilter=Satya+Nadella');
       cy.wait(3000);
       cy.get('[data-test*="invoice-row"]').each($el => {
          cy.wrap($el).find('[data-test="invoice-client"]').contains("Satya Nadella");
       });
 
-      cy.visit('http://localhost:3000/invoices?page=1&clientFilter=ASDF');
+      cy.visit('/invoices?page=1&clientFilter=ASDF');
       cy.wait(3000);
       cy.get('[data-test="empty-placeholder"]').should('be.visible');
    });
 
    it('Pagination test', () => {
       cy.clearCookies();
-      cy.visit('http://localhost:3000/login')
+      cy.visit('/login')
       
       cy.get('[data-test="email"]').should('be.visible');
       cy.get('[data-test="email"]').type(`${userEmail}`);
@@ -124,7 +125,7 @@ describe('/invoices', () => {
       cy.get('[data-test="view-all-invoices"]').click();
       cy.location('pathname').should('eq', '/invoices');
 
-      cy.visit('http://localhost:3000/invoices');
+      cy.visit('/invoices');
       cy.wait(3000);
       cy.get('[data-test*="page-"]').should('have.length', 5);
 

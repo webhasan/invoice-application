@@ -27,7 +27,6 @@ const LatestClients = () => {
 			filterable: false,
 			editable: false,
 			flex: 1,
-			valueGetter: (params: GridValueGetterParams) => params.row.name,
 		},
 		 
 		{
@@ -47,7 +46,6 @@ const LatestClients = () => {
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
-			valueGetter: (params: GridValueGetterParams) => params.row.totalBilled,
 		},
 		{
 			field: "invoicesCount",
@@ -56,7 +54,6 @@ const LatestClients = () => {
 			minWidth: 100,
 			filterable: false,
 			flex: 1,
-			valueGetter: (params: GridValueGetterParams) => params.row.invoicesCount,
 		},
 
 		{

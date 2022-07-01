@@ -9,7 +9,7 @@ import { api } from "../../../utils/api";
 
 type PropType = {
 	clients: {label: string, id: string}[]
-	defaultClient?: {label: string, id: string}
+	defaultClient?: string;
 }
 
 const NewInvoicePage:FC<PropType> = ({clients, defaultClient}) => {

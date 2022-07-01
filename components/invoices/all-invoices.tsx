@@ -41,7 +41,7 @@ const AllInvoices = () => {
 
 			if(sort && sortBy) {
 				router.replace({
-					query: {...router.query, sortOrder: sort?.toLocaleUpperCase(), sortBy}
+					query: {...router.query, sortBy, sortOrder: sort?.toLocaleUpperCase() }
 				});
 			}
 		}else {
@@ -58,23 +58,27 @@ const AllInvoices = () => {
    }
 
 	const handleFilter = async (filterData: GridFilterModel) => {
-		
+
+
 		let query = router.query;
-			query.page = '1';
-		
 	
-		if(query.companyFilter) {
-			delete query.companyFilter;
-		}
-
-		if(query.clientFilter) {
-			delete query.clientFilter;
-		}
-
 		if(filterData.items.length) {
 			const {columnField, value} = filterData.items[0];
 
 			if(columnField && value) {
+
+				if(query.companyFilter) {
+					delete query.companyFilter;
+				}
+		
+				if(query.clientFilter) {
+					delete query.clientFilter;
+				}
+
+				if(query.page) {
+					delete query.page;
+				}
+
 				if(columnField === 'company') {
 					query = {...query, companyFilter: value}
 				}
@@ -82,10 +86,23 @@ const AllInvoices = () => {
 				if(columnField === 'client') {
 					query =  {...query, clientFilter: value}
 				}
-			}
-		}
 
-		router.replace({query});
+				router.replace({query});
+			}
+		}else {
+			if(query.companyFilter) {
+				delete query.companyFilter;
+			}
+	
+			if(query.clientFilter) {
+				delete query.clientFilter;
+			}
+
+			if(query.page) {
+				delete query.page;
+			}
+			router.replace({query});
+		}
 	}
 	
 	const handlePageChange = (event: ChangeEvent<unknown>, value: number) => {

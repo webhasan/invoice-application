@@ -11,6 +11,12 @@ import { useRouter } from "next/router";
 import Container from "@mui/material/Container";
 import { ChangeEvent, useEffect, useState } from "react";
 
+const sortByValue = {
+	name : 'clientName',
+	companyName : 'companyName',
+	invoicesCount : 'invoicesCount',
+	totalBilled : 'totalBilled'
+}
 
 const ClientsArchive = () => {
 	const router = useRouter();
@@ -24,7 +30,9 @@ const ClientsArchive = () => {
 
    const handleSort = (sortData: GridSortModel) => {
 		if(sortData[0]) {
-			const {sort, field: sortBy} = sortData[0];
+			const {sort, field } = sortData[0];
+			const sortBy = sortByValue[field as keyof typeof sortByValue];
+			
 			router.replace({
 				query: {...router.query, sortBy, sortOrder: sort?.toLocaleUpperCase()}
 			});
@@ -119,10 +127,8 @@ const ClientsArchive = () => {
 
 	const columns: GridColDef[] = [
 		{
-			field: "clientName",
+			field: "name",
 			headerName: "Name",
-			valueGetter: (params: GridValueGetterParams) =>
-				params.row.name,
 			sortable: true,
 			minWidth: 100,
 			filterable: true,
@@ -130,12 +136,12 @@ const ClientsArchive = () => {
 			flex: 1,
 			renderHeader: () => (
 				<strong data-test="client-name-header">Name</strong>
-			)
+			),
+			valueGetter: (params: GridValueGetterParams) => params.row.name,
 		},
 		{
 			field: "companyName",
 			headerName: "Company Name",
-			valueGetter: (params: GridValueGetterParams) => params.row.companyDetails.name,
 			sortable: true,
 			minWidth: 100,
 			filterable: true,
@@ -143,15 +149,8 @@ const ClientsArchive = () => {
 			flex: 1,
 			renderHeader: () => (
 				<strong data-test="company-name-header">Company Name</strong>
-			)
-		},
-		{
-			field: "email",
-			headerName: "Email Address",
-			sortable: false,
-			minWidth: 100,
-			filterable: false,
-			flex: 1,
+			),
+			valueGetter: (params: GridValueGetterParams) => params.row.companyDetails.name,
 		},
 		{
 			field: "totalBilled",
@@ -161,7 +160,7 @@ const ClientsArchive = () => {
 			filterable: false,
 			flex: 1,
 			renderHeader: () => (
-				<strong data-test="total-price-header">Total Billed</strong>
+				<strong data-test="total-billed-header">Total Billed</strong>
 			)
 		},
 		{
@@ -172,7 +171,7 @@ const ClientsArchive = () => {
 			filterable: false,
 			flex: 1,
 			renderHeader: () => (
-				<strong data-test="Invoice-count-header">Invoices Count</strong>
+				<strong data-test="invoices-count-header">Invoices Count</strong>
 			)
 		},
 

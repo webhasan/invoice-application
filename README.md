@@ -10,8 +10,8 @@ To run app as dev mood use command `npm run dev` or product `npm run build` and 
 
 ## Test ##
 There are 2 test case available. 
-** jest test: ** `npm run test`
-** E2E cypress test: ** `npm run cypress`
+**jest test:** `npm run test`
+**E2E cypress test:** `npm run cypress`
 
 
 ## Packages/Libraries ##

@@ -6,21 +6,18 @@ import { AuthContext } from "../../store/auth-context";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import Avatar from "@mui/material/Avatar";
-import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
-import LoadingButton from "@mui/lab/LoadingButton";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import NextLink from 'next/link'
 import { toast } from 'material-react-toastify';
 import { ucFirst } from "../../utils/functions";
+import TextInput from "../form/text-input";
+import PasswordInput from "../form/password-input";
+import SubmitButton from "../form/submit-button";
 
 type Inputs = {
 	email: string;
@@ -40,7 +37,6 @@ const schema = object({
 const LoginForm: React.FC = () => {
 	const router = useRouter();
 	const { login } = useContext(AuthContext);
-	const [showPassword, setShowPassword] = useState(false);
 	const [isProcessingLogin, setIsProcessingLogin] = useState(false);
 	const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -77,7 +73,6 @@ const LoginForm: React.FC = () => {
 		}
 	}, [router.isReady, router.query]);
 
-
 	return (
 		<Container component="main" maxWidth="xs">
 			<Box
@@ -106,72 +101,29 @@ const LoginForm: React.FC = () => {
 				)}
 
 				<Box component="form" onSubmit={handleSubmit(onSubmit)}>
-					<TextField
-						margin="normal"
-						fullWidth
+					<TextInput
 						id="email"
-						label="Email Address *"
-						inputProps={{ "data-test": "email" }}
-						error={!!errors.email}
-						helperText={
-							errors.email && (
-								<span data-test="email-error">
-									{errors.email?.message}
-								</span>
-							)
-						}
+						label="Email Address *"	
+						dataTest="email"
+						dataErrorTest="email-error"
+						error={errors.email}
 						{...register("email")}
 					/>
 
-					<TextField
-						margin="normal"
-						fullWidth
-						label="Password *"
-						type={showPassword ? "text" : "password"}
+					<PasswordInput
 						id="password"
-						inputProps={{ "data-test": "password" }}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<IconButton
-										aria-label="toggle password visibility"
-										onClick={() =>
-											setShowPassword(
-												(showPassword) => !showPassword
-											)
-										}
-										edge="end"
-									>
-										{showPassword ? (
-											<VisibilityOff />
-										) : (
-											<Visibility />
-										)}
-									</IconButton>
-								</InputAdornment>
-							),
-						}}
-						error={!!errors.password}
-						helperText={
-							errors.password && (
-								<span data-test="password-error">
-									{errors.password?.message}
-								</span>
-							)
-						}
+						label="Password *"
+						error={errors.password}
+						dataTest="password"
+						dataErrorTest="password-error"
 						{...register("password")}
 					/>
 
-					<LoadingButton
-						type="submit"
-						fullWidth
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
-						data-test="submit-login"
+					<SubmitButton 
+						title = 'Login'
 						loading={!!isProcessingLogin}
-					>
-						Login
-					</LoadingButton>
+						dataTest="submit-login"
+					/>
 
 					<div className="text-center">
 						<NextLink href="/signup" passHref>

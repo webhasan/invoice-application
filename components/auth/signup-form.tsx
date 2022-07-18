@@ -6,17 +6,17 @@ import { AuthContext } from "../../store/auth-context";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import Avatar from "@mui/material/Avatar";
-import TextField from "@mui/material/TextField";
 import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Link from "@mui/material/Link";
 import {api} from '../../utils/api';
 import { ucFirst } from "../../utils/functions";
+import TextInput from "../form/text-input";
+import SubmitButton from "../form/submit-button";
 
 type Inputs = {
 	name: string;
@@ -105,87 +105,52 @@ const SignupForm: React.FC = () => {
 				)}
 
 				<Box component="form" onSubmit={handleSubmit(onSubmit)}>
-					<TextField
-						margin="normal"
-						fullWidth
+					<TextInput
 						id="name"
 						label="Name *"
-						inputProps={{ "data-test": "name" }}
-						error={!!errors.name}
-						helperText={
-							errors.name && (
-								<span data-test="name-error">
-									{errors.name?.message}
-								</span>
-							)
-						}
-						{...register("name")}
+						dataTest="name"
+						dataErrorTest="name-error"
+						{...register("name")}	
+						error={errors.name}					
 					/>
 
-					<TextField
-						margin="normal"
-						fullWidth
+					<TextInput
 						id="email"
 						label="Email Address *"
-						inputProps={{ "data-test": "email" }}
-						error={!!errors.email}
-						helperText={
-							errors.email && (
-								<span data-test="email-error">
-									{errors.email?.message}
-								</span>
-							)
-						}
-						{...register("email")}
+						dataTest="email"
+						dataErrorTest="email-error"
+						error={errors.email}	
+						type="email"	
+						{...register("email")}				
 					/>
 
-					<TextField
-						margin="normal"
-						fullWidth
+					<TextInput
+						id="password"
 						label="Password *"
-						type="password"
-						id="password"
-						inputProps={{ "data-test": "password" }}
-						error={!!errors.password}
-						helperText={
-							errors.password && (
-								<span data-test="password-error">
-									{errors.password?.message}
-								</span>
-							)
-						}
-						{...register("password")}
+						dataTest="password"
+						dataErrorTest="password-error"	
+						error={errors.password}	
+						type="password"	
+						{...register("password")}			
 					/>
-
-					<TextField
-						margin="normal"
-						fullWidth
+					
+					<TextInput
+						id="confirm-password"
 						label="Confirm Password *"
-						type="password"
-						id="password"
-						inputProps={{ "data-test": "confirm-password" }}
-						error={!!errors.confirmPassword}
-						helperText={
-							errors.confirmPassword && (
-								<span data-test="confirm-password-error">
-									{errors.confirmPassword?.message}
-								</span>
-							)
-						}
-						{...register("confirmPassword")}
+						dataTest="confirm-password"
+						error={errors.confirmPassword}
+						dataErrorTest="confirm-password-error"
+						type="password"	
+						{...register("confirmPassword")}			
 					/>
 
-					<LoadingButton
-						type="submit"
-						fullWidth
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
-						data-test="submit-sign-up"
+					<SubmitButton 
+						title = 'Sign Up'
 						loading={!!processFormSubmit}
-					>
-						Sign Up
-					</LoadingButton>
+						dataTest="submit-sign-up"
+					/>
 				</Box>
+
 				<div className="text-center">
 					<NextLink href="/login" passHref>
 						<Link variant="body2">

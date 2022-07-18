@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm, SubmitHandler, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, array, ref } from "yup";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -15,6 +14,8 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import FormHelperText from "@mui/material/FormHelperText";
 import { ucFirst } from "../../utils/functions";
+import TextInput from "../form/text-input";
+import SubmitButton from "../form/submit-button";
 
 export type Inputs = {
 	date: string;
@@ -113,80 +114,42 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 				)}
 
 				<Box component="form" onSubmit={handleSubmit(onSubmit)}>
-					<TextField
-						margin="normal"
-						fullWidth
+
+					<TextInput
 						id="date"
-                  type="date"	
+						type="date"	
 						label="Invoice Date*"
-						InputLabelProps={{
-							shrink: true,
-						}}
-						inputProps={{ "data-test": "invoice-date" }}
-						error={!!errors.date}
-						helperText={
-							errors.date && (
-								<span data-test="invoice-date-error">
-									{errors.date?.message}
-								</span>
-							)
-						}
+						dataTest="invoice-date"
+						dataErrorTest="invoice-date-error"
+						error={errors.date}
 						{...register("date")}
 					/>
 
-					<TextField
-						margin="normal"
-						fullWidth
+					<TextInput
 						id="dueDate"
-                  type="date"
+						type="date"	
 						label="Due Date*"
-						InputLabelProps={{
-							shrink: true,
-						}}
-						inputProps={{ "data-test": "invoice-due-date" }}
-						error={!!errors.dueDate}
-						helperText={
-							errors.dueDate && (
-								<span data-test="invoice-due-date-error">
-									{errors.dueDate?.message}
-								</span>
-							)
-						}
+						dataTest="invoice-due-date"
+						dataErrorTest="invoice-due-date-error"
+						error={errors.dueDate}
 						{...register("dueDate")}
 					/>
 
-					<TextField
-						margin="normal"
-						fullWidth
+					<TextInput
 						label="Invoice Number*"
 						id="invoice_number"
-						inputProps={{ "data-test": "invoice-number" }}
-						error={!!errors.invoice_number}
-						helperText={
-							errors.invoice_number && (
-								<span data-test="invoice-number-error">
-									{errors.invoice_number?.message}
-								</span>
-							)
-						}
+						dataTest="invoice-number"
+						dataErrorTest="invoice-number-error"
+						error={errors.invoice_number}
 						{...register("invoice_number")}
 					/>
 
-					<TextField
-						margin="normal"
-						fullWidth
+					<TextInput
 						label="Project Code"
-                  multiline
 						id="projectCode"
-						inputProps={{ "data-test": "invoice-project-code" }}
-						error={!!errors.projectCode}
-						helperText={
-							errors.projectCode && (
-								<span data-test="invoice-project-code-error">
-									{errors.projectCode?.message}
-								</span>
-							)
-						}
+						dataTest="invoice-project-code"
+						dataErrorTest="invoice-project-code-error"
+						error={errors.projectCode}
 						{...register("projectCode")}
 					/>
 
@@ -209,20 +172,16 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
 									</li>
 								)}
 								renderInput={(params) => {
-									const inputProps = {...params.inputProps, 'data-test': 'invoice-company-id'}
-									return <TextField  
-										label="Company* " 
-										error={!!errors.client_id}
-										margin="normal"
-										helperText= {
-											errors.client_id && (
-												<span data-test="invoice-company-id-error">
-													{errors.client_id?.message}
-												</span>
-											)
-										}
-										{...{...params, inputProps} }
-									/>
+									const inputProps = {...params.inputProps, 'dateTest': 'invoice-company-id'}
+									return (
+										<TextInput
+											label="Company* " 
+											dataTest="invoice-company-id"
+											dataErrorTest="invoice-company-id-error"
+											error={errors.client_id}
+											{...{...params, inputProps} }
+										/>
+									)
 								}}
 							/>
 						)}
@@ -234,48 +193,33 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
                   return (
                      <Grid container key={field.id} alignItems="center" spacing={1} data-test={`invoice-item-${index + 1}`}>
                         <Grid item xs={1}>
-                        <IconButton aria-label="delete" onClick={() => remove(index)}>
-                           <DeleteIcon color="error"/>
-                        </IconButton>
+									<IconButton aria-label="delete" onClick={() => remove(index)}>
+										<DeleteIcon color="error"/>
+									</IconButton>
                         </Grid>
+
                         <Grid item xs={8}>
-                           <TextField
-                              margin="normal"
-                              fullWidth
-										multiline
-                              label="Description*"
+									<TextInput
+										label="Description*"
 										id={`description-${field.id}`}
-                              inputProps={{ "data-test": "invoice-item-description" }}
-                              error={!!errors.items?.[index]?.description}
-                              helperText={
-                                 errors.items?.[index]?.description && (
-                                    <span data-test="invoice-item-description-error">
-                                       {errors.items?.[index]?.description?.message}
-                                    </span>
-                                 )
-                              }
-                              {...register(`items.${index}.description`)}
-                           />
+										dataTest="invoice-item-description"
+										dataErrorTest="invoice-item-description-error"
+										error={errors.items?.[index]?.description}
+										{...register(`items.${index}.description`)}
+									/>
                         </Grid>
+
                         <Grid item xs={3}>
-                           <TextField
-                              margin="normal"
-                              fullWidth
-                              label="Pice*"
-                              id={`price-${field.id}`}
-                              type="number"
-                              inputProps={{ "data-test": "invoice-item-value" }}
-                              error={!!errors.items?.[index]?.price}
-                              helperText={
-                                 errors.items?.[index]?.price && (
-                                    <span data-test="invoice-item-value-error">
-                                       {errors.items?.[index]?.price?.message}
-                                    </span>
-                                 )
-                              }
-                              {...register(`items.${index}.price`)}
-                           />
+									<TextInput
+										label="Pice*"
+										id={`price-${field.id}`}
+										dataTest="invoice-item-value"
+										dataErrorTest="invoice-item-value-error"
+										error={errors.items?.[index]?.price}
+										{...register(`items.${index}.price`)}
+									/>
                         </Grid>
+
                      </Grid>
                   )
                })}
@@ -283,16 +227,12 @@ const InvoiceForm: React.FC<PropsType> = ({clients, submitForm, submitButtonText
                <Button onClick={() => {append({description: '', price: 0}); clearErrors('items') }}>Add Item + </Button>
 					{errors.items &&  <FormHelperText error>{(errors.items as unknown as {message: string}).message}</FormHelperText>}
 
-					<LoadingButton
-						type="submit"
-						fullWidth
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
-						data-test="submit-login"
+					<SubmitButton 
+						title = {submitButtonText}
 						loading={!!processingSubmit}
-					>
-						{submitButtonText}
-					</LoadingButton>
+						dataTest="submit-login"
+					/>
+					
 				</Box>
 			</Box>
 		</Container>

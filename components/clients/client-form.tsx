@@ -2,14 +2,14 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm, SubmitHandler, UseFormReset } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { ucFirst } from "../../utils/functions";
 import Grid from "@mui/material/Grid";
+import TextInput from "../form/text-input";
+import SubmitButton from "../form/submit-button";
 
 export type Inputs = {
 	email: string;
@@ -108,155 +108,89 @@ const ClientForm: React.FC<PropTypes> = ({
 				<Box component="form" onSubmit={handleSubmit(onSubmit)}>
 					<Grid container spacing={2}>
 						<Grid item lg={6}>
-							<TextField
-								margin="normal"
-								fullWidth
+							<TextInput 
 								id="email"
 								type="email"
 								label="Client Email*"
-								inputProps={{ "data-test": "client-email" }}
-								error={!!errors.email}
-								helperText={
-									errors.email && (
-										<span data-test="client-email-error">
-											{errors.email.message}
-										</span>
-									)
-								}
+								dataTest="client-email"
+								dataErrorTest="client-email-error"
+								error={errors.email}
 								{...register("email")}
 							/>
 
-							<TextField
-								margin="normal"
-								fullWidth
+							<TextInput 
 								id="name"
 								label="Client Name*"
-								inputProps={{ "data-test": "client-name" }}
-								error={!!errors.name}
-								helperText={
-									errors.name && (
-										<span data-test="client-name-error">
-											{errors.name.message}
-										</span>
-									)
-								}
+								dataTest="client-name"
+								dataErrorTest="client-name-error"
+								error={errors.name}
 								{...register("name")}
 							/>
 
-							<TextField
-								margin="normal"
-								fullWidth
-								label="Company Name*"
+							<TextInput 
 								id="companyName"
-								inputProps={{ "data-test": "client-company-name" }}
-								error={!!errors.companyName}
-								helperText={
-									errors.companyName && (
-										<span data-test="client-company-name-error">
-											{errors.companyName.message}
-										</span>
-									)
-								}
+								label="Company Name*"
+								dataTest="client-company-name"
+								dataErrorTest="client-company-name-error"
+								error={errors.companyName}
 								{...register("companyName")}
 							/>
 
-							<TextField
-								margin="normal"
-								fullWidth
-								label="Company Address*"
-								multiline
+							<TextInput 
 								id="companyAddress"
-								inputProps={{ "data-test": "client-company-address" }}
-								error={!!errors.companyAddress}
-								helperText={
-									errors.companyAddress && (
-										<span data-test="client-company-address-error">
-											{errors.companyAddress.message}
-										</span>
-									)
-								}
+								label="Company Address*"
+								dataTest="client-company-address"
+								dataErrorTest="client-company-address-error"
+								error={errors.companyAddress}
 								{...register("companyAddress")}
 							/>
 						</Grid>
 
 						<Grid item lg={6}>
-							<TextField
-								margin="normal"
-								fullWidth
-								label="VAT Number*"
+							<TextInput 
 								id="vatNumber"
-								inputProps={{ "data-test": "client-company-vat" }}
-								error={!!errors.vatNumber}
-								helperText={
-									errors.vatNumber && (
-										<span data-test="client-company-vat-error">
-											{errors.vatNumber.message}
-										</span>
-									)
-								}
+								label="VAT Number*"
+								dataTest="client-company-vat"
+								dataErrorTest="client-company-vat-error"
+								error={errors.vatNumber}
 								{...register("vatNumber")}
 							/>
-							<TextField
-								margin="normal"
-								fullWidth
+
+							<TextInput 
 								label="Reg Number*"
 								id="regNumber"
-								inputProps={{ "data-test": "client-company-reg" }}
-								error={!!errors.regNumber}
-								helperText={
-									errors.regNumber && (
-										<span data-test="client-company-reg-error">
-											{errors.regNumber.message}
-										</span>
-									)
-								}
+								dataTest="client-company-reg"
+								dataErrorTest="client-company-reg-error"
+								error={errors.regNumber}
 								{...register("regNumber")}
 							/>
-							<TextField
-								margin="normal"
-								fullWidth
-								label="IBAN Number"
+
+							<TextInput 
+								label="IBAN Number*"
 								id="iban"
-								inputProps={{ "data-test": "client-company-iban" }}
-								error={!!errors.iban}
-								helperText={
-									errors.iban && (
-										<span data-test="client-company-iban-error">
-											{errors.iban?.message}
-										</span>
-									)
-								}
+								dataTest="client-company-iban"
+								dataErrorTest="client-company-iban-error"
+								error={errors.iban}
 								{...register("iban")}
 							/>
-							<TextField
-								margin="normal"
-								fullWidth
-								label="SWIFT Number"
+
+							<TextInput 
+								label="SWIFT Number*"
 								id="swift"
-								inputProps={{ "data-test": "client-company-swift" }}
-								error={!!errors.swift}
-								helperText={
-									errors.swift && (
-										<span data-test="client-company-swift-error">
-											{errors.swift.message}
-										</span>
-									)
-								}
+								dataTest="client-company-swift"
+								dataErrorTest="client-company-swift-error"
+								error={errors.swift}
 								{...register("swift")}
 							/>
 						</Grid>
 					</Grid>
 
-					<LoadingButton
-						type="submit"
-						fullWidth
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
-						data-test="submit-client"
+					<SubmitButton 
+						title = {buttonText}
 						loading={!!processingSubmit}
-					>
-						{buttonText}
-					</LoadingButton>
+						dataTest="submit-client"
+					/>
+					
 				</Box>
 			</Box>
 		</Container>

@@ -1,4 +1,4 @@
-# Invoice application #
+# Invoice Creation Application for Company and Freelancer #
 
 ## Configuration: ##
 The app backend is used this [https://github.com/vladnicula/invoice-rest-api](https://github.com/vladnicula/invoice-rest-api) project REST API. 

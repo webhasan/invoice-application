@@ -1,4 +1,4 @@
-# Invoice Applicaton #
+# Invoice Applicatoin #
 
 It's an application to generate invoices for companies and individuals. It includes clients and invoices management. It provides sort and filtering options to quickly filter invoices with any pramitest of invoices and clients.  It's based on **Next.JS,**  the MUI library. It's a highly tested-application with unite testing and end-to-end testing with Cypress. 
 

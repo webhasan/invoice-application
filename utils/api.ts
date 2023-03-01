@@ -144,36 +144,7 @@ const editInvoice = async (id: string, data:InvoiceSubmissionType ) => {
 	}
 }
 
-const getClients = async ({token, limit, offset, sortBy, sortOrder, filter}: getClientsPropsType = {}) => {
-
-	// const queryParams: Record<string, any> = {}
-	
-	// let headerToken = {}
-
-	// if(token) {
-	// 	headerToken = { Authorization:  'Bearer ' + token }
-	// }
-
-	// if(limit) {
-	// 	queryParams.limit = limit;
-  	// }
-
-   // if(offset) {
-	// 	queryParams.offset = offset;
-   // }
-
-	// 	if(sortBy && sortOrder) {
-	// 		queryParams.sort = {
-	// 			 [sortBy]: sortOrder.toLowerCase()
-	// 		}
-	//   }
-
-	//   if(filter) {
-	// 	queryParams.filter = filter;
-	//   }
-
-
-	//const encodeParamsString = encodeURIComponent(JSON.stringify(queryParams));
+const getClients = async ({token, limit, offset, sortBy, sortOrder }: getClientsPropsType = {}) => {
 
 	let queryParams = '';
 
@@ -200,10 +171,6 @@ const getClients = async ({token, limit, offset, sortBy, sortOrder, filter}: get
 		setTokenToGraphQLRequest(graphQLRequest, token);
 	}
 	try {
-		// const { data } = await apiRequest.get<ClientsResponseData>(`clients?params=${encodeParamsString}`, {
-		// 	headers:{...headerToken}
-		// });
-
 		const {data} = await graphQLRequest.query<ClientsResponseData>({
 		  query: gql`
 				query {
@@ -225,9 +192,11 @@ const getClients = async ({token, limit, offset, sortBy, sortOrder, filter}: get
 		  `,
 		  fetchPolicy: 'network-only',
 		});
-
 		return data.clients;
 	} catch (error) {
+
+		console.log('Error', error);
+
 		handleError(error);
 	}
 };

@@ -21,6 +21,7 @@ const sortByValue = {
 const ClientsArchive = () => {
 	const router = useRouter();
 	const { error, status, value: clientsData, execute } = useAsync(api.getClients, false);
+	
 	console.log('value from list page', clientsData);
 
 	const loading = status === "pending" || status === "idle";

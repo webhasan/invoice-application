@@ -55,12 +55,12 @@ const NavLink:FC<PropsType> = ({href, children, type, ...rest}) => {
         return  (
             href ? (
                 <Link href={href} passHref>
-                    <Button sx={{ my: 2, color: "white", display: "block" }} {...activeNavProps} {...rest}>
+                    <Button sx={{ my: 2, color: "white", display: "block", textAlign: 'center' }} {...activeNavProps} {...rest}>
                         {children}
                     </Button>
                 </Link>
             ): (
-                <Button sx={{ my: 2, color: "white", display: "block" }} {...activeNavProps} {...rest}>
+                <Button sx={{ my: 2, color: "white", display: "block", textAlign: 'center' }} {...activeNavProps} {...rest}>
                     {children}
                 </Button>
             )

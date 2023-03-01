@@ -6,10 +6,11 @@ import ResponsiveAppBar from "../components/layout/navbar";
 import AuthContextProvider from "../store/auth-context-provider";
 import Head from "next/head";
 import { ToastContainer } from 'material-react-toastify';
+import Theme from "../components/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<>
+		<Theme>
 			<Head>
 				<title>Invoice App</title>
 				<meta name="viewport" content="initial-scale=1, width=device-width" />;
@@ -20,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<Component {...pageProps} />
 			</AuthContextProvider>
 			<ToastContainer position="top-center"/>
-		</>
+		</Theme>
 	);
 }
 

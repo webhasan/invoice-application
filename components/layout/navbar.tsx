@@ -8,15 +8,22 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { AuthContext } from "../../store/auth-context";
 import Link from 'next/link';
 import NavLink from "./nav-link";
+import { ColorModeContext } from "../theme";
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useTheme } from "@mui/material";
 
 const ResponsiveAppBar = () => {
+	const { toggleColorMode } = useContext(ColorModeContext);
+	const theme = useTheme();
+
+	theme
+
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
 		null
 	);
@@ -101,7 +108,7 @@ const ResponsiveAppBar = () => {
 							open={Boolean(anchorElNav)}
 							onClose={handleCloseNavMenu}
 							sx={{
-								display: { xs: "block", md: "none" },
+								display: { xs: "block", md: "none"},
 							}}
 						>
 								<NavLink type="MenuItem" href="/">Home</NavLink>
@@ -189,6 +196,10 @@ const ResponsiveAppBar = () => {
 							</Menu>
 						</Box>
 					)}
+
+					<IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+						{theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+					</IconButton>
 				</Toolbar>
 			</Container>
 		</AppBar>

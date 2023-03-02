@@ -3,6 +3,8 @@ A full featured Invoice creation and client management application.
 
 [Live Demo -> ](https://ginvoice.netlify.app)
 
+![Screenshot](screenshot.png)
+
 
 ## Testing ##
 There are 2 test case available. 
